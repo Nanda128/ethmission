@@ -1,0 +1,8 @@
+{
+  "contract": {
+    "address": "0x2304D8F3FA4856641d240e18e35C3b8D30B7eDdA"
+  },
+  "provider": {
+    "url": "https://sepolia.infura.io/v3/8877ec34ef9a4bc98a87b3603bf6a7b1"
+  }
+}

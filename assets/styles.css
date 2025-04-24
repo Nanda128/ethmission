@@ -1,0 +1,393 @@
+:root {
+    --primary-color: #3a6df0;
+    --primary-hover: #2954c8;
+    --secondary-color: #6c5ce7;
+    --accent-color: #00b894;
+    --danger-color: #e74c3c;
+    --warning-bg: #fff8e6;
+    --light-bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+    --radius-sm: 4px;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --transition: all 0.2s ease;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #f6f9fc 0%, #eef1f5 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 32px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+h1, h2 {
+    color: var(--text-primary);
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 28px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    margin: 10px 0;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+button:hover {
+    background: var(--primary-hover);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: var(--shadow-sm);
+}
+
+input {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 8px 0 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    font-size: 15px;
+    transition: var(--transition);
+    box-sizing: border-box;
+    background-color: var(--light-bg);
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(58, 109, 240, 0.15);
+}
+
+input::placeholder {
+    color: var(--text-muted);
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.info, .output {
+    background: var(--light-bg);
+    border-left: 4px solid var(--primary-color);
+    padding: 16px;
+    margin: 16px 0;
+    border-radius: var(--radius-sm);
+    word-break: break-word;
+    font-size: 15px;
+    animation: fadeIn 0.3s ease;
+}
+
+.output {
+    border-left-color: var(--accent-color);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.wallet-connection-options {
+    margin-bottom: 24px;
+}
+
+.option-divider {
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    margin: 20px 0;
+}
+
+.option-divider::before,
+.option-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.option-divider span {
+    padding: 0 16px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.wallet-upload-section {
+    border: 1px dashed var(--border-color);
+    padding: 20px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    transition: var(--transition);
+    background: var(--light-bg);
+}
+
+.wallet-upload-section:hover {
+    border-color: var(--primary-color);
+}
+
+#walletFileInput {
+    width: 100%;
+    padding: 10px 0;
+    display: none;
+}
+
+.file-input-label {
+    display: inline-block;
+    background: var(--secondary-color);
+    color: white;
+    padding: 12px 18px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 16px;
+    width: calc(100% - 40px);
+    text-align: center;
+    margin-bottom: 12px;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.file-input-label:hover {
+    background: #5a4ad1;
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+}
+
+.private-key-container {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.private-key-reveal {
+    display: none;
+    background: #fff2f2;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid #ffcdd2;
+    color: #d32f2f;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.hover-instruction {
+    display: none;
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-left: 6px;
+}
+
+.private-key-container:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.private-key-container:hover .private-key-hidden {
+    display: none;
+}
+
+.private-key-container:hover .private-key-reveal,
+.private-key-container:hover .hover-instruction {
+    display: inline-block;
+}
+
+.copy-tooltip {
+    position: absolute;
+    top: -36px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #323232;
+    color: white;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    white-space: nowrap;
+}
+
+.copy-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: #323232;
+}
+
+.show-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.private-key-container:active {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.warning {
+    color: var(--danger-color);
+    font-weight: 500;
+    background: var(--warning-bg);
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--danger-color);
+    margin: 16px 0;
+    font-size: 15px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 24px;
+        margin: 20px auto;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 20px;
+        margin: 10px auto;
+    }
+    
+    button, .file-input-label {
+        padding: 12px 16px;
+    }
+    
+    h1 {
+        font-size: 22px;
+    }
+    
+    h2 {
+        font-size: 18px;
+    }
+}
+
+/* Make specific buttons visually different */
+#connectMetamaskButton {
+    background-color: #f6851b;
+}
+
+#connectMetamaskButton:hover {
+    background-color: #e67e22;
+}
+
+#buyTicketButton {
+    background-color: var(--accent-color);
+}
+
+#buyTicketButton:hover {
+    background-color: #00a583;
+}
+
+#createWalletButton {
+    background-color: var(--secondary-color);
+}
+
+#createWalletButton:hover {
+    background-color: #5a4ad1;
+}
+
+/* Add nice loading state for buttons */
+button.loading {
+    position: relative;
+    pointer-events: none;
+    color: transparent;
+}
+
+button.loading::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

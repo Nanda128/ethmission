@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EthMission - A Web3 Ticketing DApp</title>
+    <link rel="stylesheet" href="./assets/styles.css">
+    <link rel="icon" href="./assets/static/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
+    <script src="./index.js" type="module"></script>
+</head>
+<body>
+<div class="container">
+    <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
+
+    <h2>Connect Your Wallet</h2>
+    <div class="wallet-connection-options">
+        <button id="connectMetamaskButton">🦊 Connect with MetaMask</button>
+        
+        <div class="option-divider">
+            <span>OR</span>
+        </div>
+        
+        <div class="wallet-upload-section">
+            <label for="walletFileInput" class="file-input-label">📂 Upload Wallet JSON</label>
+            <input type="file" id="walletFileInput" accept=".json">
+            <div id="uploadedWalletInfo" class="info" style="display: none;"></div>
+            <div id="walletDecryptSection" style="display: none;">
+                <label for="walletPassword">Enter password to decrypt wallet:</label>
+                <input type="password" id="walletPassword" placeholder="Wallet password">
+                <button id="connectUploadedWalletButton">🔓 Connect with Uploaded Wallet</button>
+            </div>
+        </div>
+    </div>
+    <div id="walletAddress" class="info"></div>
+
+    <h2>Create a New Wallet</h2>
+    <div>
+        <button id="createWalletButton">🔑 Create New Wallet</button>
+        <div id="newWalletInfo" class="info"></div>
+        <div id="walletPasswordSection" style="display:none;">
+            <label for="walletPassword">Set password to encrypt wallet:</label>
+            <input id="walletPasswordCreate" type="password" placeholder="Enter a strong password">
+            <button id="downloadWalletButton">💾 Download Wallet</button>
+            <p class="warning">⚠️ Store your password safely! If you lose it, you cannot recover your wallet.</p>
+        </div>
+    </div>
+
+    <h2>Buy a Ticket</h2>
+    <button id="buyTicketButton">🎫 Buy Ticket (0.01 ETH)</button>
+
+    <h2>Check Balances</h2>
+    <button id="checkBalanceButton">🔍 Check My Balances</button>
+    <div id="balances" class="info"></div>
+
+    <h2>Transfer a Ticket</h2>
+    <label for="transferTo">Recipient address:</label>
+    <input id="transferTo" placeholder="Recipient address">
+    <label for="transferAmount">Amount (tickets):</label>
+    <input id="transferAmount" type="number" placeholder="Amount (tickets)">
+    <button id="transferAmountButton">🔁 Transfer</button>
+
+    <div id="output" class="output"></div>
+</div>
+</body>
+</html>
