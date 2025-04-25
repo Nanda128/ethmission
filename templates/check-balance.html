@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Check Balance - EthMission</title>
+    <link rel="stylesheet" href="../src/css/styles.css">
+    <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
+    <script src="../src/js/common.js" type="module"></script>
+    <script src="../src/js/config.js" type="module"></script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="create-wallet.html">Create Wallet</a></li>
+                <li><a href="check-balance.html" class="active">Check Balance</a></li>
+                <li><a href="buy-ticket.html">Buy Ticket</a></li>
+                <li><a href="transfer-ticket.html">Transfer Ticket</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Check Balances</h2>
+            <p>View your ETH and ticket token balances.</p>
+
+            <div class="connect-wallet-section">
+                <h3>Connect Wallet First</h3>
+                <div class="wallet-connection-options">
+                    <button id="connectMetamaskButton">🦊 Connect with MetaMask</button>
+
+                    <div class="option-divider">
+                        <span>OR</span>
+                    </div>
+
+                    <div class="wallet-upload-section">
+                        <label for="walletFileInput" class="file-input-label">📂 Upload Wallet JSON</label>
+                        <input type="file" id="walletFileInput" accept=".json">
+                        <div id="uploadedWalletInfo" class="info" style="display: none;"></div>
+                        <div id="walletDecryptSection" style="display: none;">
+                            <label for="walletPassword">Enter password to decrypt wallet:</label>
+                            <input type="password" id="walletPassword" placeholder="Wallet password">
+                            <button id="connectUploadedWalletButton">🔓 Connect with Uploaded Wallet</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="wallet-connected-message" style="display: none;">✅ Connected!</div>
+                <div id="walletAddress" class="info"></div>
+            </div>
+
+            <div class="balance-section">
+                <h3>Your Balances</h3>
+                <button id="checkBalanceButton">🔍 Check My Balances</button>
+                <div id="balances" class="info"></div>
+            </div>
+
+            <div class="user-role-section">
+                <h3>User Roles</h3>
+                <div class="role-cards">
+                    <div class="role-card">
+                        <h4>Event Attendee</h4>
+                        <p>Confirm your ticket purchase and check your balance before the event.</p>
+                    </div>
+                    <div class="role-card">
+                        <h4>Event Doorman</h4>
+                        <p>Verify wallet addresses hold valid ticket tokens before entry.</p>
+                    </div>
+                    <div class="role-card">
+                        <h4>Venue Manager</h4>
+                        <p>Check overall distribution and sales of ticket tokens.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="output" class="output"></div>
+
+    <footer>
+        <p>©(not really) 2025 EthMission—A Web3 Ticketing DApp</p>
+    </footer>
+</div>
+
+<script type="module">
+    import { setupWalletConnectors } from '../src/js/wallet.js';
+    import { setupBalanceChecking } from '../src/js/balance.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setupWalletConnectors();
+        setupBalanceChecking();
+    });
+</script>
+</body>
+</html>
