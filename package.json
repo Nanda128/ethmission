@@ -1,7 +1,6 @@
 {
   "name": "ethmission",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "build": "npm install",
     "clean": "rimraf node_modules package-lock.json"

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Wallet - EthMission</title>
+  <link rel="stylesheet" href="../src/css/styles.css">
+  <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
+  <script src="../src/js/common.js" type="module"></script>
+  <script src="../src/js/config.js" type="module"></script>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="create-wallet.html" class="active">Create Wallet</a></li>
+        <li><a href="check-balance.html">Check Balance</a></li>
+        <li><a href="buy-ticket.html">Buy Ticket</a></li>
+        <li><a href="transfer-ticket.html">Transfer Ticket</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Create a New Wallet</h2>
+      <p>Generate a new Ethereum wallet for use with EthMission ticketing.</p>
+
+      <div class="wallet-creation">
+        <button id="createWalletButton">🔑 Create New Wallet</button>
+        <div id="newWalletInfo" class="info"></div>
+        <div id="walletPasswordSection" style="display:none;">
+          <label for="walletPasswordCreate">Set password to encrypt wallet:</label>
+          <input id="walletPasswordCreate" type="password" placeholder="Enter a strong password">
+          <button id="downloadWalletButton">💾 Download Wallet</button>
+          <p class="warning">⚠️ Store your password safely! If you lose it, you cannot recover your wallet.</p>
+        </div>
+      </div>
+
+      <div class="wallet-security-tips">
+        <h3>Wallet Security Tips</h3>
+        <ul>
+          <li>Never share your private key or password with anyone.</li>
+          <li>Store your wallet file in a secure location.</li>
+          <li>Use a strong, unique password that you can remember.</li>
+          <li>Consider using a password manager to store your password.</li>
+          <li>Back up your wallet file in multiple secure locations.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <div id="output" class="output"></div>
+
+  <footer>
+    <p>©(not really) 2025 EthMission - A Web3 Ticketing DApp</p>
+  </footer>
+</div>
+
+<script type="module">
+  import { setupWalletCreation } from '../src/js/wallet.js';
+  document.addEventListener('DOMContentLoaded', () => {
+    setupWalletCreation();
+  });
+</script>
+</body>
+</html>

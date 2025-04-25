@@ -4,5 +4,8 @@
   },
   "provider": {
     "url": "https://sepolia.infura.io/v3/8877ec34ef9a4bc98a87b3603bf6a7b1"
+  },
+  "vendor" : {
+    "address": "0x9C9c3a09df1A02c7Dc62a9571090A9B12B49F65c"
   }
 }

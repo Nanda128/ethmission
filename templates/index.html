@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EthMission - A Web3 Ticketing DApp</title>
+    <link rel="stylesheet" href="../src/css/styles.css">
+    <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
+    <script src="../src/js/common.js" type="module"></script>
+    <script src="../src/js/config.js" type="module"></script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="create-wallet.html">Create Wallet</a></li>
+                <li><a href="check-balance.html">Check Balance</a></li>
+                <li><a href="buy-ticket.html">Buy Ticket</a></li>
+                <li><a href="transfer-ticket.html">Transfer Ticket</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="welcome">
+            <h2>Welcome to EthMission</h2>
+            <p>A decentralized ticketing solution built on Ethereum.</p>
+        </section>
+
+        <section class="features">
+            <h2>Features</h2>
+            <div class="feature-cards">
+                <div class="card">
+                    <h3>Create Wallet</h3>
+                    <p>Create a new Ethereum wallet and securely store your credentials.</p>
+                    <a href="create-wallet.html" class="button">Create Wallet</a>
+                </div>
+                <div class="card">
+                    <h3>Check Balance</h3>
+                    <p>View your ETH and ticket token balances in one place.</p>
+                    <a href="check-balance.html" class="button">Check Balance</a>
+                </div>
+                <div class="card">
+                    <h3>Buy Ticket</h3>
+                    <p>Purchase event tickets using ETH from your connected wallet.</p>
+                    <a href="buy-ticket.html" class="button">Buy Ticket</a>
+                </div>
+                <div class="card">
+                    <h3>Transfer Ticket</h3>
+                    <p>Transfer your tickets to other attendees or back to the vendor.</p>
+                    <a href="transfer-ticket.html" class="button">Transfer Ticket</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="output" class="output"></div>
+
+    <footer>
+        <p>©(not really) 2025 EthMission—A Web3 Ticketing DApp</p>
+    </footer>
+</div>
+</body>
+</html>
