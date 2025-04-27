@@ -107,7 +107,11 @@ function showNewWalletInfo() {
 
     walletInfo.innerHTML = `
                     ✅ New wallet created!<br>
-                    Address: ${state.newWallet.address}<br>
+                    Address: <span class="address-container">
+                        ${state.newWallet.address}
+                        <span class="hover-instruction">(Click to copy)</span>
+                        <span class="copy-tooltip">Copied!</span>
+                    </span><br>
                     Private Key: <span class="private-key-container">
                         <span class="private-key-hidden">***SENSITIVE—NEVER SHARE***</span>
                         <span class="private-key-reveal">${state.newWallet.privateKey}</span>
@@ -118,6 +122,7 @@ function showNewWalletInfo() {
                 `;
 
     setupPrivateKeyCopy(walletInfo.querySelector('.private-key-container'));
+    setupAddressCopy(walletInfo.querySelector('.address-container'));
     toggleElement('walletPasswordSection');
     showMessage("✅ New wallet created! Set a password to download it.");
 }
@@ -129,6 +134,19 @@ function setupPrivateKeyCopy(container) {
         try {
             await navigator.clipboard.writeText(state.newWallet.privateKey);
             showTooltip(container, "✅ Private key copied to clipboard!");
+        } catch (err) {
+            showMessage("❌ Failed to copy: " + err);
+        }
+    });
+}
+
+function setupAddressCopy(container) {
+    if (!container) return;
+
+    container.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(state.newWallet.address);
+            showTooltip(container, "✅ Address copied to clipboard!");
         } catch (err) {
             showMessage("❌ Failed to copy: " + err);
         }

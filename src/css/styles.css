@@ -226,6 +226,27 @@ input[type="file"] {
     opacity: 1;
 }
 
+.address-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    font-family: monospace;
+    background-color: #f5f5f5;
+    padding: 3px 6px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.address-container:hover {
+    background-color: #e0e0e0;
+}
+
+.address-container .hover-instruction {
+    font-size: 0.8rem;
+    color: #666;
+    margin-left: 5px;
+}
+
 .welcome {
     text-align: center;
     padding: 40px 20px;
