@@ -235,6 +235,24 @@
 			},
 			{
 				"inputs": [],
+				"name": "getTicketHolders",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "name",
 				"outputs": [
 					{
@@ -528,11 +546,11 @@
 			]
 		},
 		"contracts/TicketToken.sol": {
-			"keccak256": "0x2e6da32635706a542af05ccb1b4ced7cf0b0a9bc3d4ae9855e4e9eccb398bb63",
+			"keccak256": "0x6603d8ee592531db0adfd8495f67c35e46e5233f5d7c3c023757eef26fc368e5",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0f5f7b0144b5e9b60a0c41a4ecf7965e20863215a036050e44af74e260474ee6",
-				"dweb:/ipfs/QmdfX1ZiEUNf5bhKUGyEYxn5oWa7cnBAk7ktDq3PPsoYJC"
+				"bzz-raw://581611dc4eedd01b1602f442215cf6385854d627e11e5c2d8bdae7e0307a28e5",
+				"dweb:/ipfs/QmZzdsapSydkEdJt6fxBnZBZZHCB41RVJYPq3J9t83Wrq2"
 			]
 		}
 	},
