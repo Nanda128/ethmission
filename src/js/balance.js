@@ -80,9 +80,16 @@ function verifyTicketHolder() {
         .catch(() => showMessage("❌ Error verifying ticket holder.", true));
 }
 
-function displayVenueStats() {
-    const {contract, web3} = state;
-    if (!contract) return showMessage("❌ Please connect your wallet first.", true);
+async function displayVenueStats() {
+    const {account, contract, web3} = state;
+    if (!account || !contract) return showMessage("❌ Please connect your wallet first.", true);
+
+    const roles = await getRegisteredRoles();
+    const isAuthorized = roles.some(role => role.address.toLowerCase() === account.toLowerCase());
+
+    if (!isAuthorized) {
+        return showMessage("❌ You are not authorized to view ticket distribution.", true);
+    }
 
     getTicketHolders(contract)
         .then(holders => {

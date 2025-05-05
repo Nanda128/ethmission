@@ -71,7 +71,7 @@ function sendTransaction(method, options, successMessage, errorMessage) {
                 checkBalances();
             })
             .catch(() => {
-                showMessage(`❌ ${errorMessage}`);
+                showMessage(`❌ ${errorMessage}, true`);
                 const throbber = document.getElementById('loadingThrobber');
                 if (throbber) throbber.style.display = 'none';
             });
