@@ -31,7 +31,9 @@ export async function getRegisteredRoles() {
 
 export async function getTicketHolders(contract) {
     try {
-        const [addresses, tickets] = await contract.methods.getTicketHolders().call();
+        const result = await contract.methods.getTicketHolders().call();
+        const addresses = result[0];
+        const tickets = result[1];
         return addresses.map((address, index) => ({ address, tickets: tickets[index] }));
     } catch (error) {
         console.error("Failed to fetch ticket holders:", error);

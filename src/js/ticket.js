@@ -18,6 +18,9 @@ export function setupTicketTransfer() {
 export function buyTicket() {
     if (!isWalletConnected()) return;
 
+    const throbber = document.getElementById('loadingThrobber');
+    if (throbber) throbber.style.display = 'block';
+
     const method = state.contract.methods.buyTicket();
     const options = {from: state.account, value: toWei(TICKET_PRICE)};
 
@@ -67,7 +70,11 @@ function sendTransaction(method, options, successMessage, errorMessage) {
                 showMessage(`✅ ${successMessage}`);
                 checkBalances();
             })
-            .catch(() => showMessage(`❌ ${errorMessage}`));
+            .catch(() => {
+                showMessage(`❌ ${errorMessage}`);
+                const throbber = document.getElementById('loadingThrobber');
+                if (throbber) throbber.style.display = 'none';
+            });
     } else {
         signAndSendTransaction(method.encodeABI(), options);
     }
