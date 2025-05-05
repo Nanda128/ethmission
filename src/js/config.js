@@ -6,6 +6,7 @@ export const TICKET_PRICE = "0.01";
 
 let config = null;
 let ABI = null;
+let roles = [];
 
 export async function initConfig() {
     try {
@@ -15,6 +16,25 @@ export async function initConfig() {
         return {config, ABI};
     } catch (error) {
         console.error("Failed to load configuration:", error);
+        throw error;
+    }
+}
+
+export async function registerRole(type, name, address) {
+    roles.push({type, name, address});
+    return Promise.resolve();
+}
+
+export async function getRegisteredRoles() {
+    return Promise.resolve(roles);
+}
+
+export async function getTicketHolders(contract) {
+    try {
+        const [addresses, tickets] = await contract.methods.getTicketHolders().call();
+        return addresses.map((address, index) => ({ address, tickets: tickets[index] }));
+    } catch (error) {
+        console.error("Failed to fetch ticket holders:", error);
         throw error;
     }
 }

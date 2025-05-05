@@ -33,11 +33,7 @@
                 <h3>Connect Wallet First</h3>
                 <div class="wallet-connection-options">
                     <button id="connectMetamaskButton">🦊 Connect with MetaMask</button>
-
-                    <div class="option-divider">
-                        <span>OR</span>
-                    </div>
-
+                    <div class="option-divider"><span>OR</span></div>
                     <div class="wallet-upload-section">
                         <label for="walletFileInput" class="file-input-label">📂 Upload Wallet JSON</label>
                         <input type="file" id="walletFileInput" accept=".json">
@@ -53,28 +49,54 @@
                 <div id="walletAddress" class="info"></div>
             </div>
 
-            <div class="balance-section">
+            <div class="role-selection-section">
+                <h3>Select Your Role</h3>
+                <div class="role-options">
+                    <label class="role-option">
+                        <input type="radio" name="userRole" value="attendee" checked>
+                        <span>Event Attendee</span>
+                    </label>
+                    <label class="role-option">
+                        <input type="radio" name="userRole" value="doorman">
+                        <span>Doorman</span>
+                    </label>
+                    <label class="role-option">
+                        <input type="radio" name="userRole" value="venue">
+                        <span>Venue Manager</span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="attendeeSection" class="role-section">
                 <h3>Your Balances</h3>
                 <button id="checkBalanceButton">🔍 Check My Balances</button>
                 <div id="balances" class="info"></div>
             </div>
 
-            <div class="user-role-section">
-                <h3>User Roles</h3>
-                <div class="role-cards">
-                    <div class="role-card">
-                        <h4>Event Attendee</h4>
-                        <p>Confirm your ticket purchase and check your balance before the event.</p>
-                    </div>
-                    <div class="role-card">
-                        <h4>Event Doorman</h4>
-                        <p>Verify wallet addresses hold valid ticket tokens before entry.</p>
-                    </div>
-                    <div class="role-card">
-                        <h4>Venue Manager</h4>
-                        <p>Check overall distribution and sales of ticket tokens.</p>
-                    </div>
-                </div>
+            <div id="doormanSection" class="role-section" style="display: none;">
+                <h3>Verify Ticket Holder</h3>
+                <label for="verifyAddress">Enter Wallet Address:</label>
+                <input type="text" id="verifyAddress" placeholder="0x...">
+                <button id="verifyTicketButton">🔍 Verify Ticket</button>
+                <div id="verificationResult" class="info"></div>
+            </div>
+
+            <div id="venueSection" class="role-section" style="display: none;">
+                <h3>Venue Management</h3>
+                <button id="checkVenueStatsButton">📊 View Ticket Distribution</button>
+                <div id="venueStats" class="info"></div>
+                <h3>Register New Venue or Doorman</h3>
+                <label for="roleType">Role Type:</label>
+                <select id="roleType">
+                    <option value="venue">Venue</option>
+                    <option value="doorman">Doorman</option>
+                </select>
+                <label for="roleName">Name:</label>
+                <input type="text" id="roleName" placeholder="Enter name">
+                <label for="roleAddress">Wallet Address:</label>
+                <input type="text" id="roleAddress" placeholder="0x...">
+                <button id="registerRoleButton">📝 Register</button>
+                <div id="registeredRoles" class="info"></div>
             </div>
         </section>
     </main>
@@ -88,11 +110,12 @@
 
 <script type="module">
     import { setupWalletConnectors } from '../src/js/wallet.js';
-    import { setupBalanceChecking } from '../src/js/balance.js';
+    import { setupBalanceChecking, setupRoleSelection } from '../src/js/balance.js';
 
     document.addEventListener('DOMContentLoaded', () => {
         setupWalletConnectors();
         setupBalanceChecking();
+        setupRoleSelection();
     });
 </script>
 </body>

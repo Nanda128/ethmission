@@ -7,12 +7,19 @@ contract TicketToken is ERC20 {
     address public owner;
     uint public ticketPrice = 0.01 ether;
 
+    mapping(address => bool) private holders;
+    address[] private holderList;
+
     constructor() ERC20("TicketToken", "TKT") {
         owner = msg.sender;
     }
 
     function buyTicket() public payable {
         require(msg.value >= ticketPrice, "Insufficient ETH sent");
+        if (!holders[msg.sender]) {
+            holders[msg.sender] = true;
+            holderList.push(msg.sender);
+        }
         _mint(msg.sender, 1 * 10 ** decimals());
     }
 
@@ -21,7 +28,23 @@ contract TicketToken is ERC20 {
         require(balance > 0, "No tickets to refund");
 
         _burn(msg.sender, 1 * 10 ** decimals());
+        if (balanceOf(msg.sender) == 0) {
+            holders[msg.sender] = false;
+        }
         payable(msg.sender).transfer(ticketPrice);
+    }
+
+    function getTicketHolders() public view returns (address[] memory, uint[] memory) {
+        uint count = holderList.length;
+        address[] memory addresses = new address[](count);
+        uint[] memory balances = new uint[](count);
+
+        for (uint i = 0; i < count; i++) {
+            addresses[i] = holderList[i];
+            balances[i] = balanceOf(holderList[i]);
+        }
+
+        return (addresses, balances);
     }
 
     function withdraw() public {
