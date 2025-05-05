@@ -32,7 +32,7 @@ export function transferTicket() {
 
     const to = getInputValue("transferTo");
     const amount = getInputValue("transferAmount");
-    if (!to || !amount) return showMessage("❌ Please enter recipient address and amount.");
+    if (!to || !amount) return showMessage("❌ Please enter recipient address and amount.", true);
 
     const amountInWei = toWei(amount);
     const method = state.contract.methods.transfer(to, amountInWei);
@@ -45,19 +45,19 @@ export function returnTicketToVendor() {
     state.contract.methods.balanceOf(state.account).call()
         .then(balance => {
             const ticketBalance = fromWei(balance);
-            if (ticketBalance <= 0) return showMessage("❌ You don't have any tickets to return.");
+            if (ticketBalance <= 0) return showMessage("❌ You don't have any tickets to return.", true);
 
             if (confirm(`Return all ${ticketBalance} tickets to vendor?`)) {
                 const method = state.contract.methods.transfer(getVendorAccess, balance);
                 sendTransaction(method, {from: state.account}, `Returned ${ticketBalance} ticket(s) to vendor`, "Error returning tickets.");
             }
         })
-        .catch(() => showMessage("❌ Error checking your ticket balance."));
+        .catch(() => showMessage("❌ Error checking your ticket balance.", true));
 }
 
 function isWalletConnected() {
     if (!state.account || !state.contract || !state.web3) {
-        showMessage("❌ Please connect your wallet first.");
+        showMessage("❌ Please connect your wallet first.", true);
         return false;
     }
     return true;

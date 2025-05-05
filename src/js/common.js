@@ -11,7 +11,7 @@ export function showMessage(msg, isError = false) {
     output.innerText = msg;
     output.style.backgroundColor = isError ? '#ffcccc' : '#ccffcc';
     output.style.display = 'block';
-    setTimeout(() => output.style.display = 'none', 5000);
+    setTimeout(() => output.style.display = 'none', 10000);
 }
 
 export function handleError(message, error) {

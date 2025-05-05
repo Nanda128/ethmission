@@ -45,6 +45,8 @@ export const getVendorAccess = () => config?.vendor?.address;
 
 export const getProviderUrl = () => config?.provider?.url;
 
+export const getDoormanPassword = () => config?.doorman?.password;
+
 export const displayVendorAddress = () => {
     document.getElementById('vendorAddress').textContent = getVendorAccess();
 };
