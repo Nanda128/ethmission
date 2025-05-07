@@ -59,3 +59,11 @@ export function signAndSendTransaction(data, options) {
             .on('error', err => handleError("Error sending transaction", err)))
         .catch(err => handleError("Error signing transaction", err));
 }
+
+export function isValidAddress(address) {
+    return state.web3.utils.isAddress(address);
+}
+
+export function getInputValue(id) {
+    return document.getElementById(id)?.value || null;
+}

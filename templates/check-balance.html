@@ -14,15 +14,17 @@
     <header>
         <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
         <nav>
-            <ul>
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="create-wallet.html">Create Wallet</a></li>
-                <li><a href="check-balance.html" class="active">Check Balance</a></li>
-                <li><a href="buy-ticket.html">Buy Ticket</a></li>
-                <li><a href="transfer-ticket.html">Transfer Ticket</a></li>
-            </ul>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="create-wallet.html">Create Wallet</a></li>
+            <li><a href="check-balance.html">Check Balance</a></li>
+            <li><a href="buy-ticket.html">Buy Ticket</a></li>
+            <li><a href="transfer-ticket.html">Transfer Ticket</a></li>
+            <li><a href="create-event.html" class="active">Create Event</a></li>
+            <li><a href="event-entry.html">Event Entry</a></li>
+          </ul>
         </nav>
-    </header>
+      </header>
 
     <main>
         <section>
@@ -53,27 +55,31 @@
                 <h3>Select Your Role</h3>
                 <div class="role-options">
                     <label class="role-option">
-                        <input type="radio" name="userRole" value="attendee" checked>
+                        <input type="radio" name="userRole" value="Attendee" checked>
                         <span>Event Attendee</span>
                     </label>
                     <label class="role-option">
-                        <input type="radio" name="userRole" value="doorman">
+                        <input type="radio" name="userRole" value="Doorman">
                         <span>Doorman</span>
                     </label>
                     <label class="role-option">
-                        <input type="radio" name="userRole" value="venue">
+                        <input type="radio" name="userRole" value="Venue">
                         <span>Venue Manager</span>
+                    </label>
+                    <label class="role-option">
+                        <input type="radio" name="userRole" value="Admin">
+                        <span>Admin</span>
                     </label>
                 </div>
             </div>
 
-            <div id="attendeeSection" class="role-section">
+            <div id="AttendeeSection" class="role-section">
                 <h3>Your Balances</h3>
                 <button id="checkBalanceButton">🔍 Check My Balances</button>
                 <div id="balances" class="info"></div>
             </div>
 
-            <div id="doormanSection" class="role-section" style="display: none;">
+            <div id="DoormanSection" class="role-section" style="display: none;">
                 <h3>Verify Ticket Holder</h3>
                 <label for="verifyAddress">Enter Wallet Address:</label>
                 <input type="text" id="verifyAddress" placeholder="0x...">
@@ -81,14 +87,17 @@
                 <div id="verificationResult" class="info"></div>
             </div>
 
-            <div id="venueSection" class="role-section" style="display: none;">
+            <div id="VenueManagerSection" class="role-section" style="display: none;">
                 <h3>Venue Management</h3>
                 <button id="checkVenueStatsButton">📊 View Ticket Distribution</button>
                 <div id="venueStats" class="info"></div>
+            </div>
+
+            <div id = "AdminSection" class="role-section" style ="display: none;">
                 <h3>Register New Venue or Doorman</h3>
                 <label for="roleType">Role Type:</label>
                 <select id="roleType">
-                    <option value="Venue">Venue</option>
+                    <option value="Venue">Venue Manager</option>
                     <option value="Doorman">Doorman</option>
                 </select>
                 <label for="roleName">Name:</label>

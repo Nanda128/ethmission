@@ -1,12 +1,27 @@
 'use strict';
 
-import {state, showMessage, signAndSendTransaction, handleError} from './common.js';
+import {state, showMessage, signAndSendTransaction, handleError, getInputValue} from './common.js';
 import {TICKET_PRICE, displayVendorAddress, getVendorAccess} from './config.js';
 import {checkBalances} from './balance.js';
+
+function updatePrice() {
+    const quantity = parseInt(document.getElementById('ticketQuantity')?.value) || 1;
+    const unitPrice = TICKET_PRICE;
+    const totalPrice = (quantity * unitPrice).toFixed(2);
+    document.getElementById('totalPrice').textContent = totalPrice;
+}
 
 export function setupTicketPurchase() {
     const button = document.getElementById('buyTicketButton');
     button?.addEventListener('click', buyTicket);
+    
+    const quantityInput = document.getElementById('ticketQuantity');
+    if (quantityInput) {
+        quantityInput.addEventListener('change', updatePrice);
+        quantityInput.addEventListener('input', updatePrice);
+        
+        updatePrice();
+    }
 }
 
 export function setupTicketTransfer() {
@@ -21,10 +36,17 @@ export function buyTicket() {
     const throbber = document.getElementById('loadingThrobber');
     if (throbber) throbber.style.display = 'block';
 
+    const quantity = parseInt(document.getElementById('ticketQuantity')?.value) || 1;
+    const totalPrice = (TICKET_PRICE * quantity).toFixed(2);
+    
     const method = state.contract.methods.buyTicket();
-    const options = {from: state.account, value: toWei(TICKET_PRICE)};
+    const options = {from: state.account, value: toWei(totalPrice.toString())};
 
-    sendTransaction(method, options, "Ticket purchased!", "Error buying ticket.");
+    sendTransaction(
+        method, 
+        options, 
+        `${quantity} ticket${quantity > 1 ? 's' : ''} purchased!`, "Error buying ticket(s)."
+    );
 }
 
 export function transferTicket() {
@@ -86,8 +108,4 @@ function toWei(value) {
 
 function fromWei(value) {
     return state.web3.utils.fromWei(value, 'ether');
-}
-
-function getInputValue(id) {
-    return document.getElementById(id)?.value;
 }

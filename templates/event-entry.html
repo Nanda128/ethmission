@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Buy Ticket - EthMission</title>
+  <title>Event Entry - EthMission</title>
   <link rel="stylesheet" href="../src/css/styles.css">
   <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
   <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
@@ -20,16 +20,16 @@
         <li><a href="check-balance.html">Check Balance</a></li>
         <li><a href="buy-ticket.html">Buy Ticket</a></li>
         <li><a href="transfer-ticket.html">Transfer Ticket</a></li>
-        <li><a href="create-event.html" class="active">Create Event</a></li>
-        <li><a href="event-entry.html">Event Entry</a></li>
+        <li><a href="create-event.html">Create Event</a></li>
+        <li><a href="event-entry.html" class="active">Event Entry</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
     <section>
-      <h2>Buy a Ticket</h2>
-      <p>Purchase event tickets using ETH from your connected wallet.</p>
+      <h2>Enter an Event</h2>
+      <p>Spend 1 TKT token to enter an event.</p>
 
       <div class="connect-wallet-section">
         <h3>Connect Wallet First</h3>
@@ -55,22 +55,27 @@
         <div id="walletAddress" class="info"></div>
       </div>
 
-      <div class="ticket-purchase-section">
-        <h3>Purchase Ticket</h3>
-        <div class="ticket-info">
-          <div class="ticket-quantity">
-            <label for="ticketQuantity">Number of tickets:</label>
-            <input type="number" id="ticketQuantity" min="1" value="1">
-          </div>
-          <div class="ticket-price">Ticket Price: <span id="ticketPriceAmount">0.01</span> ETH</div>
-          <div class="ticket-details">
-            <p>Includes access to all events linked to us.</p>
-            <p>Tickets are stored as ERC-20 tokens in your wallet.</p>
-          </div>
+      <div class="event-entry-section">
+        <h3>Available Events</h3>
+        <div class="event-selection">
+          <select id="eventSelector">
+            <option value="">-- Select an Event --</option>
+            <!-- Event options will be populated dynamically -->
+          </select>
         </div>
-        <button id="buyTicketButton">🎫 Buy Ticket (<span id="totalPrice">0.01</span> ETH)</button>
-        <div id="loadingThrobber" class="loading-throbber" style="display: none;"></div>
-        <div id="balances" class="info"></div>
+        
+        <div id="eventDetails" class="event-details" style="display: none;">
+          <h4 id="selectedEventName"></h4>
+          <p>Date & Time: <span id="selectedEventDate"></span></p>
+          <p>Current Attendance: <span id="currentAttendance">0</span> / <span id="maxCapacity"></span></p>
+          <div class="capacity-bar">
+            <div id="capacityIndicator" class="capacity-indicator"></div>
+          </div>
+          <button id="enterEventButton">🎟️ Enter Event (Spend 1 TKT)</button>
+          <p id="capacityWarning" class="warning" style="display: none;">⚠️ Reached Max Capacity</p>
+        </div>
+        
+        <div id="ticketBalance" class="info"></div>
       </div>
     </section>
   </main>
@@ -84,11 +89,11 @@
 
 <script type="module">
   import { setupWalletConnectors } from '../src/js/wallet.js';
-  import { setupTicketPurchase } from '../src/js/ticket.js';
+  import { setupEventEntry } from '../src/js/event.js';
 
   document.addEventListener('DOMContentLoaded', () => {
     setupWalletConnectors();
-    setupTicketPurchase();
+    setupEventEntry();
   });
 </script>
 </body>

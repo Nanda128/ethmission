@@ -15,23 +15,33 @@ contract TicketToken is ERC20 {
     }
 
     function buyTicket() public payable {
-        require(msg.value >= ticketPrice, "Insufficient ETH sent");
+        uint ticketsToBuy = msg.value / ticketPrice;
+        require(ticketsToBuy > 0, "Insufficient ETH sent");
+        
         if (!holders[msg.sender]) {
             holders[msg.sender] = true;
             holderList.push(msg.sender);
         }
-        _mint(msg.sender, 1 * 10 ** decimals());
+        
+        _mint(msg.sender, ticketsToBuy * 10 ** decimals());
+        
+        uint excess = msg.value % ticketPrice;
+        if (excess > 0) {
+            payable(msg.sender).transfer(excess);
+        }
     }
 
-    function refundTicket() public {
+    function refundTickets(uint amount) public {
         uint balance = balanceOf(msg.sender);
-        require(balance > 0, "No tickets to refund");
-
-        _burn(msg.sender, 1 * 10 ** decimals());
+        require(balance >= amount * 10 ** decimals(), "Insufficient tickets to refund");
+        
+        _burn(msg.sender, amount * 10 ** decimals());
+        
         if (balanceOf(msg.sender) == 0) {
             holders[msg.sender] = false;
         }
-        payable(msg.sender).transfer(ticketPrice);
+        
+        payable(msg.sender).transfer(amount * ticketPrice);
     }
 
     function getTicketHolders() public view returns (address[] memory, uint[] memory) {

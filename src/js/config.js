@@ -7,6 +7,21 @@ export const TICKET_PRICE = "0.01";
 let config = null;
 let ABI = null;
 let roles = [];
+let events = [];
+
+try {
+    const storedEvents = localStorage.getItem('ethmission_events');
+    if (storedEvents) {
+        events = JSON.parse(storedEvents);
+    }
+    
+    const storedRoles = localStorage.getItem('ethmission_roles');
+    if (storedRoles) {
+        roles = JSON.parse(storedRoles);
+    }
+} catch (error) {
+    console.error("Failed to load data from localStorage:", error);
+}
 
 export async function initConfig() {
     try {
@@ -22,6 +37,7 @@ export async function initConfig() {
 
 export async function registerRole(type, name, address) {
     roles.push({type, name, address});
+    localStorage.setItem('ethmission_roles', JSON.stringify(roles));
     return Promise.resolve();
 }
 
@@ -45,10 +61,29 @@ export const getVendorAccess = () => config?.vendor?.address;
 
 export const getProviderUrl = () => config?.provider?.url;
 
-export const getDoormanPassword = () => config?.doorman?.password;
+export const getAdminPassword = () => config?.admin?.password;
 
 export const displayVendorAddress = () => {
     document.getElementById('vendorAddress').textContent = getVendorAccess();
 };
+
+export async function getEvents() {
+    return Promise.resolve(events);
+}
+
+export async function saveEvent(event) {
+    events.push(event);
+    localStorage.setItem('ethmission_events', JSON.stringify(events));
+    return Promise.resolve();
+}
+
+export async function updateEventAttendance(eventId, newAttendance) {
+    const event = events.find(e => e.id === eventId);
+    if (event) {
+        event.currentAttendance = newAttendance;
+        localStorage.setItem('ethmission_events', JSON.stringify(events));
+    }
+    return Promise.resolve();
+}
 
 initConfig().catch(console.error);

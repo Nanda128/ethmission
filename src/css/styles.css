@@ -90,6 +90,11 @@ button:hover {
     background-color: #2980b9;
 }
 
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
 input[type="text"], input[type="password"], input[type="number"] {
     width: 100%;
     padding: 10px;
@@ -296,6 +301,72 @@ input[type="file"] {
     font-weight: bold;
     margin: 20px auto;
     display: none;
+}
+
+.event-creation-section, .event-entry-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.event-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.event-form input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.event-selection {
+    margin-bottom: 20px;
+}
+
+.event-selection select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.event-details {
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.capacity-bar {
+    height: 20px;
+    background-color: #eee;
+    border-radius: 10px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.capacity-indicator {
+    height: 100%;
+    background-color: #4CAF50;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.warning {
+    color: #FF6B6B;
+    font-weight: bold;
+    margin: 10px 0;
 }
 
 @media (max-width: 768px) {

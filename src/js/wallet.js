@@ -1,6 +1,6 @@
 'use strict';
 
-import {state, showMessage, handleError, updateWalletUI} from './common.js';
+import {state, showMessage, handleError, updateWalletUI, getInputValue} from './common.js';
 import {initConfig, getProviderUrl} from './config.js';
 
 export function setupWalletConnectors() {
@@ -197,10 +197,6 @@ function toggleElement(id, text = '') {
         element.style.display = 'block';
         if (text) element.innerText = text;
     }
-}
-
-function getInputValue(id) {
-    return document.getElementById(id)?.value || '';
 }
 
 function showTooltip(container, message) {

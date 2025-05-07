@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Buy Ticket - EthMission</title>
+  <title>Create Event - EthMission</title>
   <link rel="stylesheet" href="../src/css/styles.css">
   <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
   <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
@@ -28,8 +28,8 @@
 
   <main>
     <section>
-      <h2>Buy a Ticket</h2>
-      <p>Purchase event tickets using ETH from your connected wallet.</p>
+      <h2>Create a New Event</h2>
+      <p>Set up a new event for ticket holders to attend.</p>
 
       <div class="connect-wallet-section">
         <h3>Connect Wallet First</h3>
@@ -55,22 +55,27 @@
         <div id="walletAddress" class="info"></div>
       </div>
 
-      <div class="ticket-purchase-section">
-        <h3>Purchase Ticket</h3>
-        <div class="ticket-info">
-          <div class="ticket-quantity">
-            <label for="ticketQuantity">Number of tickets:</label>
-            <input type="number" id="ticketQuantity" min="1" value="1">
+      <div class="event-creation-section">
+        <h3>Event Details</h3>
+        <div class="event-form">
+          <div class="form-group">
+            <label for="eventName">Event Name:</label>
+            <input type="text" id="eventName" placeholder="Enter event name">
           </div>
-          <div class="ticket-price">Ticket Price: <span id="ticketPriceAmount">0.01</span> ETH</div>
-          <div class="ticket-details">
-            <p>Includes access to all events linked to us.</p>
-            <p>Tickets are stored as ERC-20 tokens in your wallet.</p>
+          <div class="form-group">
+            <label for="eventDate">Event Date & Time:</label>
+            <input type="datetime-local" id="eventDate">
           </div>
+          <div class="form-group">
+            <label for="doormanAddress">Doorman Address:</label>
+            <input type="text" id="doormanAddress" placeholder="0x...">
+          </div>
+          <div class="form-group">
+            <label for="maxCapacity">Maximum Capacity:</label>
+            <input type="number" id="maxCapacity" min="1" placeholder="Max number of attendees">
+          </div>
+          <button id="createEventButton">🎫 Create Event</button>
         </div>
-        <button id="buyTicketButton">🎫 Buy Ticket (<span id="totalPrice">0.01</span> ETH)</button>
-        <div id="loadingThrobber" class="loading-throbber" style="display: none;"></div>
-        <div id="balances" class="info"></div>
       </div>
     </section>
   </main>
@@ -84,11 +89,11 @@
 
 <script type="module">
   import { setupWalletConnectors } from '../src/js/wallet.js';
-  import { setupTicketPurchase } from '../src/js/ticket.js';
+  import { setupEventCreation } from '../src/js/event.js';
 
   document.addEventListener('DOMContentLoaded', () => {
     setupWalletConnectors();
-    setupTicketPurchase();
+    setupEventCreation();
   });
 </script>
 </body>
