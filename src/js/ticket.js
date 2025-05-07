@@ -1,6 +1,6 @@
 'use strict';
 
-import {state, showMessage, signAndSendTransaction} from './common.js';
+import {state, showMessage, signAndSendTransaction, handleError} from './common.js';
 import {TICKET_PRICE, displayVendorAddress, getVendorAccess} from './config.js';
 import {checkBalances} from './balance.js';
 
@@ -32,7 +32,7 @@ export function transferTicket() {
 
     const to = getInputValue("transferTo");
     const amount = getInputValue("transferAmount");
-    if (!to || !amount) return showMessage("❌ Please enter recipient address and amount.", true);
+    if (!to || !amount) return handleError("Please enter recipient address and amount.");
 
     const amountInWei = toWei(amount);
     const method = state.contract.methods.transfer(to, amountInWei);
@@ -45,19 +45,19 @@ export function returnTicketToVendor() {
     state.contract.methods.balanceOf(state.account).call()
         .then(balance => {
             const ticketBalance = fromWei(balance);
-            if (ticketBalance <= 0) return showMessage("❌ You don't have any tickets to return.", true);
+            if (ticketBalance <= 0) return handleError("You don't have any tickets to return.");
 
             if (confirm(`Return all ${ticketBalance} tickets to vendor?`)) {
                 const method = state.contract.methods.transfer(getVendorAccess, balance);
                 sendTransaction(method, {from: state.account}, `Returned ${ticketBalance} ticket(s) to vendor`, "Error returning tickets.");
             }
         })
-        .catch(() => showMessage("❌ Error checking your ticket balance.", true));
+        .catch(() => handleError("Error checking your ticket balance."));
 }
 
 function isWalletConnected() {
     if (!state.account || !state.contract || !state.web3) {
-        showMessage("❌ Please connect your wallet first.", true);
+        handleError("Please connect your wallet first.");
         return false;
     }
     return true;
@@ -71,7 +71,7 @@ function sendTransaction(method, options, successMessage, errorMessage) {
                 checkBalances();
             })
             .catch(() => {
-                showMessage(`❌ ${errorMessage}, true`);
+                handleError(errorMessage);
                 const throbber = document.getElementById('loadingThrobber');
                 if (throbber) throbber.style.display = 'none';
             });

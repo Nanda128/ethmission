@@ -14,9 +14,9 @@ export function showMessage(msg, isError = false) {
     setTimeout(() => output.style.display = 'none', 10000);
 }
 
-export function handleError(message, error) {
+export function handleError(message, error = null) {
     console.error(message, error);
-    showMessage(`❌ ${message}: ${error.message}`, true);
+    showMessage(error ? `❌ ${message}: ${error.message}` : `❌ ${message}`, true);
 }
 
 export function updateWalletUI(address) {
@@ -47,7 +47,7 @@ export function updateBalancesUI(ticketBal, ethBal) {
 
 export function signAndSendTransaction(data, options) {
     if (!state.web3 || !state.account || !state.contract) {
-        return showMessage("❌ Wallet not connected.", true);
+        return handleError("Wallet not connected.");
     }
 
     const tx = {...options, to: state.contract.options.address, gas: 200000, data};

@@ -1,6 +1,6 @@
 'use strict';
 
-import {showMessage, state, updateBalancesUI} from './common.js';
+import {handleError, showMessage, state, updateBalancesUI} from './common.js';
 import {getDoormanPassword, getRegisteredRoles, getTicketHolders, initConfig, registerRole} from './config.js';
 
 const registeredNames = new Set();
@@ -19,7 +19,7 @@ export function setupRoleSelection() {
 
 async function handleRoleChange(selectedRole) {
     if (selectedRole === 'doorman' && !(await verifyDoormanPassword())) {
-        showMessage("❌ Invalid doorman password.", true);
+        handleError("Invalid doorman password.");
         resetToAttendeeRole();
     } else {
         applyRoleSelection(selectedRole);
@@ -45,7 +45,7 @@ async function verifyDoormanPassword() {
         await initConfig();
         return password === getDoormanPassword();
     } catch {
-        showMessage("❌ Unable to verify doorman password. Please try again.", true);
+        handleError("Unable to verify doorman password. Please try again.");
         return false;
     }
 }
@@ -57,7 +57,7 @@ function toggleRoleSection(role) {
 
 export function checkBalances() {
     const {account, contract, web3} = state;
-    if (!account || !contract || !web3) return showMessage("❌ Please connect your wallet first.", true);
+    if (!account || !contract || !web3) return handleError("Please connect your wallet first.");
 
     const throbber = document.getElementById('loadingThrobber');
     Promise.all([contract.methods.balanceOf(account).call(), web3.eth.getBalance(account)])
@@ -65,30 +65,30 @@ export function checkBalances() {
             updateBalancesUI(ticketBal, ethBal);
             showMessage("✅ Balances updated!");
         })
-        .catch(() => showMessage("❌ Error fetching balances.", true))
+        .catch(() => handleError("Error fetching balances."))
         .finally(() => throbber && (throbber.style.display = 'none'));
 }
 
 function verifyTicketHolder() {
     const address = getInputValue('verifyAddress');
-    if (!address) return showMessage("❌ Please enter a wallet address.", true);
+    if (!address) return handleError("Please enter a wallet address.");
 
     state.contract.methods.balanceOf(address).call()
         .then(balance => {
             document.getElementById('verificationResult').innerText = balance > 0 ? "✅ Valid ticket holder!" : "❌ No tickets found.";
         })
-        .catch(() => showMessage("❌ Error verifying ticket holder.", true));
+        .catch(() => handleError("Error verifying ticket holder."));
 }
 
 async function displayVenueStats() {
     const {account, contract, web3} = state;
-    if (!account || !contract) return showMessage("❌ Please connect your wallet first.", true);
+    if (!account || !contract) return handleError("Please connect your wallet first.");
 
     const roles = await getRegisteredRoles();
     const isAuthorized = roles.some(role => role.address.toLowerCase() === account.toLowerCase());
 
     if (!isAuthorized) {
-        return showMessage("❌ You are not authorized to view ticket distribution.", true);
+        return handleError("You are not authorized to view ticket distribution.");
     }
 
     getTicketHolders(contract)
@@ -106,23 +106,23 @@ async function displayVenueStats() {
             }).join('');
             setupAddressCopy(statsDiv);
         })
-        .catch(() => showMessage("❌ Error fetching venue stats.", true));
+        .catch(() => handleError("Error fetching venue stats."));
 }
 
 function registerNewRole() {
     const [roleType, roleName, roleAddress] = ['roleType', 'roleName', 'roleAddress'].map(getInputValue);
-    if (!roleType || !roleName || !roleAddress) return showMessage("❌ Please fill in all fields.", true);
+    if (!roleType || !roleName || !roleAddress) return handleError("Please fill in all fields.");
 
     if (registeredNames.has(roleName)) {
-        return showMessage("❌ Role name already exists. Please choose a different name.", true);
+        return handleError("Role name already exists. Please choose a different name.");
     }
 
     if (!web3.utils.isAddress(roleAddress)) {
-        return showMessage("❌ Invalid wallet address. Please enter a valid address.", true);
+        return handleError("Invalid wallet address. Please enter a valid address.");
     }
 
     if (registeredAddresses.has(roleAddress)) {
-        return showMessage("❌ Address already registered. Please use a different address.", true);
+        return handleError("Address already registered. Please use a different address.");
     }
 
     registerRole(roleType, roleName, roleAddress)
@@ -132,7 +132,7 @@ function registerNewRole() {
             showMessage(`✅ ${roleType} registered successfully!`);
             displayRegisteredRoles();
         })
-        .catch(() => showMessage("❌ Error registering role.", true));
+        .catch(() => handleError("Error registering role."));
 }
 
 function displayRegisteredRoles() {
@@ -141,7 +141,7 @@ function displayRegisteredRoles() {
             const rolesDiv = document.getElementById('registeredRoles');
             rolesDiv.innerHTML = roles.map(({type, name, address}) => `<p>${type}: ${name} (${address})</p>`).join('');
         })
-        .catch(() => showMessage("❌ Error fetching registered roles.", true));
+        .catch(() => handleError("Error fetching registered roles."));
 }
 
 function setupButton(buttonId, handler) {
@@ -163,7 +163,7 @@ function setupAddressCopy(container) {
                 setTimeout(() => tooltip.classList.remove('show-tooltip'), 2000);
                 showMessage("✅ Full address copied to clipboard!");
             } catch {
-                showMessage("❌ Failed to copy address.", true);
+                handleError("Failed to copy address.");
             }
         });
     });

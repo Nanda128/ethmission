@@ -31,7 +31,7 @@ export function setupWalletCreation() {
 }
 
 export function connectWithMetamask(contractAddress, ABI) {
-    if (!window.ethereum) return showMessage("❌ Please install MetaMask!", true);
+    if (!window.ethereum) return handleError("Please install MetaMask!");
 
     state.web3 = new Web3(window.ethereum);
 
@@ -71,10 +71,10 @@ function showUploadedWalletInfo() {
 }
 
 export async function connectWithUploadedWallet(contractAddress, ABI) {
-    if (!state.uploadedWallet) return showMessage("❌ No wallet file uploaded.", true);
+    if (!state.uploadedWallet) return handleError("No wallet file uploaded.");
 
     const password = getInputValue('walletPassword');
-    if (!password) return showMessage("❌ Please enter your wallet password.", true);
+    if (!password) return handleError("Please enter your wallet password.");
 
     try {
         const providerUrl = getProviderUrl();
@@ -135,7 +135,7 @@ function setupPrivateKeyCopy(container) {
             await navigator.clipboard.writeText(state.newWallet.privateKey);
             showTooltip(container, "✅ Private key copied to clipboard!");
         } catch (err) {
-            showMessage("❌ Failed to copy: " + err, true);
+            handleError("Failed to copy: " + err);
         }
     });
 }
@@ -148,16 +148,16 @@ function setupAddressCopy(container) {
             await navigator.clipboard.writeText(state.newWallet.address);
             showTooltip(container, "✅ Address copied to clipboard!");
         } catch (err) {
-            showMessage("❌ Failed to copy: " + err, true);
+            handleError("Failed to copy: " + err);
         }
     });
 }
 
 export function downloadWallet() {
-    if (!state.newWallet) return showMessage("❌ No wallet created yet. Please create a wallet first.", true);
+    if (!state.newWallet) return handleError("No wallet created yet. Please create a wallet first.");
 
     const password = getInputValue("walletPasswordCreate");
-    if (!password) return showMessage("❌ Please enter a password to encrypt your wallet.", true);
+    if (!password) return handleError("Please enter a password to encrypt your wallet.");
 
     try {
         const web3Instance = new Web3();
