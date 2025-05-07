@@ -14,6 +14,8 @@ export function setupEventEntry() {
 
     eventSelector?.addEventListener('change', loadEventOptionsAndDetails);
     enterButton?.addEventListener('click', enterEvent);
+
+    loadEventOptionsAndDetails()
 }
 
 async function createEvent() {
@@ -67,11 +69,17 @@ async function loadEventOptionsAndDetails() {
 
 function populateEventSelector(events) {
     const selector = document.getElementById('eventSelector');
+    const currentSelection = selector.value;
+    
     selector.innerHTML = '<option value="">Select an event</option>';
     events.forEach(event => {
         const option = new Option(event.name, event.id);
         selector.add(option);
     });
+    
+    if (currentSelection) {
+        selector.value = currentSelection;
+    }
 }
 
 async function displaySelectedEventDetails(events) {
