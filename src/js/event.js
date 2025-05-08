@@ -1,7 +1,7 @@
 'use strict';
 
 import {state, showMessage, handleError, isValidAddress, getInputValue} from './common.js';
-import {registerRole, getEvents, saveEvent, updateEventAttendance} from './config.js';
+import {registerRole, getEvents, saveEvent, updateEventAttendance, recordEventEntry} from './config.js';
 
 export function setupEventCreation() {
     const createButton = document.getElementById('createEventButton');
@@ -141,6 +141,8 @@ async function enterEvent() {
         await transferTicket(selectedEvent);
         selectedEvent.currentAttendance += 1;
         await updateEventAttendance(eventId, selectedEvent.currentAttendance);
+        
+        await recordEventEntry(eventId, state.account);
 
         showMessage("✅ Successfully entered the event!");
         await displaySelectedEventDetails(events);

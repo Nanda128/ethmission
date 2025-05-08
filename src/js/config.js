@@ -86,4 +86,30 @@ export async function updateEventAttendance(eventId, newAttendance) {
     return Promise.resolve();
 }
 
+export async function recordEventEntry(eventId, userAddress) {
+    const attendeeKey = 'ethmission_event_attendees';
+    let attendeeMap = JSON.parse(localStorage.getItem(attendeeKey) || '{}');
+    
+    if (!attendeeMap[userAddress]) {
+        attendeeMap[userAddress] = [];
+    }
+    
+    if (!attendeeMap[userAddress].includes(eventId)) {
+        attendeeMap[userAddress].push(eventId);
+    }
+    
+    localStorage.setItem(attendeeKey, JSON.stringify(attendeeMap));
+    return Promise.resolve();
+}
+
+export async function getUserEvents(userAddress) {
+    const attendeeKey = 'ethmission_event_attendees';
+    const attendeeMap = JSON.parse(localStorage.getItem(attendeeKey) || '{}');
+    const userEventIds = attendeeMap[userAddress] || [];
+    
+    const allEvents = await getEvents();
+    
+    return allEvents.filter(event => userEventIds.includes(event.id));
+}
+
 initConfig().catch(console.error);

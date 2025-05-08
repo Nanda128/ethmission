@@ -1,7 +1,7 @@
 'use strict';
 
 import {handleError, showMessage, state, updateBalancesUI, isValidAddress, getInputValue} from './common.js';
-import {getAdminPassword, getRegisteredRoles, getTicketHolders, initConfig, registerRole} from './config.js';
+import {getAdminPassword, getRegisteredRoles, getTicketHolders, initConfig, registerRole, getUserEvents} from './config.js';
 
 const handlers = {
     checkBalanceButton: checkBalances,
@@ -108,10 +108,28 @@ function verifyTicketHolder() {
     if (!address) return handleError("Please enter a wallet address.");
 
     state.contract.methods.balanceOf(address).call()
-        .then(balance => {
+        .then(async balance => {
             document.getElementById('verificationResult').innerText = balance > 0 ? "✅ Valid ticket holder!" : "❌ No tickets found.";
+            await showAttendeeEvents(address);
         })
         .catch(() => handleError("Error verifying ticket holder."));
+}
+
+async function showAttendeeEvents(address) {
+    try {
+        const userEvents = await getUserEvents(address);
+        
+        const eventsDiv = document.getElementById('attendeeEvents');
+        if (userEvents.length > 0) {
+            eventsDiv.innerHTML = `<h4>Registered Events:</h4><ul>` +
+                userEvents.map(event => `<li>${event.name} - ${new Date(event.date).toLocaleString()}</li>`).join('') +
+                `</ul>`;
+        } else {
+            eventsDiv.innerHTML = `<p>No registered events found for this address.</p>`;
+        }
+    } catch (error) {
+        handleError("Error fetching attendee events", error);
+    }
 }
 
 function registerNewRole() {
