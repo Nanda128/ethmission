@@ -394,6 +394,38 @@ footer {
     border-top: 1px solid #ddd;
 }
 
+.ticket-holders-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.ticket-holder-item {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.holder-main-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.ticket-balance {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.holder-roles, .holder-organized-events, .holder-attended-events {
+    font-size: 0.9rem;
+    margin-top: 4px;
+    padding-left: 8px;
+    border-left: 2px solid #eaeaea;
+}
+
 .loading-throbber {
     margin: 15px auto;
     width: 40px;

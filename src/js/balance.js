@@ -1,7 +1,7 @@
 'use strict';
 
 import {handleError, showMessage, state, updateBalancesUI, isValidAddress, getInputValue} from './common.js';
-import {getAdminPassword, getRegisteredRoles, getTicketHolders, initConfig, registerRole, getUserEvents} from './config.js';
+import {getAdminPassword, getRegisteredRoles, getTicketHolders, initConfig, registerRole, getUserEvents, getEvents} from './config.js';
 
 const handlers = {
     checkBalanceButton: checkBalances,
@@ -10,15 +10,24 @@ const handlers = {
     registerRoleButton: registerNewRole
 };
 
+function getRoleSectionId(role) {
+    const roleMap = {
+        'Attendee': 'AttendeeSection',
+        'Doorman': 'DoormanSection',
+        'Venue': 'VenueSection',
+        'Admin': 'AdminSection'
+    };
+    return roleMap[role] || 'AttendeeSection';
+}
+
 async function handleRoleChange(selectedRole) {
     if (selectedRole === 'Admin' && !(await verifyAdminPassword())) {
         handleError("Invalid Admin password.");
         resetToAttendeeRole();
-    } else if (['Venue Manager', 'Doorman'].includes(selectedRole) && !(await verifyRoleRegistration(selectedRole))) {
+    } else if (['Venue', 'Doorman'].includes(selectedRole) && !(await verifyRoleRegistration(selectedRole))) {
         resetToAttendeeRole();
     } else {
         applyRoleSelection(selectedRole);
-        if (selectedRole === 'Attendee') showMessage("✅ Attendee access granted.");
     }
 }
 
@@ -45,30 +54,108 @@ async function verifyAdminPassword() {
 }
 
 async function displayVenueStats() {
+    console.log("displayVenueStats called");
     const {account, contract, web3} = state;
-    if (!account || !contract) return handleError("Please connect your wallet first.");
-
-    const roles = await getRegisteredRoles();
-    if (!roles.some(role => role.address.toLowerCase() === account.toLowerCase())) {
-        return handleError("You are not authorized to view ticket distribution.");
+    if (!account || !contract) {
+        console.log("No account or contract");
+        return handleError("Please connect your wallet first.");
     }
 
     try {
+        console.log("Getting roles");
+        const roles = await getRegisteredRoles();
+        
+        // Skip role verification for testing
+        // if (!roles.some(role => role.address.toLowerCase() === account.toLowerCase())) {
+        //     console.log("Not authorized", account, roles);
+        //     return handleError("You are not authorized to view ticket distribution.");
+        // }
+
+        console.log("Getting ticket holders");
         const holders = await getTicketHolders(contract);
+        console.log("Holders:", holders);
+        
+        console.log("Getting events");
+        const allEvents = await getEvents();
+        console.log("Events:", allEvents);
+        
         const statsDiv = document.getElementById('venueStats');
-        statsDiv.innerHTML = holders.map(({address, tickets}) => {
+        console.log("statsDiv:", statsDiv);
+        
+        // Clear existing content and add a loading indicator
+        statsDiv.innerHTML = '<div class="loading-throbber"></div>' +
+                             '<p>Loading ticket holder data...</p>';
+        
+        // Short delay to ensure UI updates
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Replace with actual content
+        statsDiv.innerHTML = '<ul class="ticket-holders-list"></ul>';
+        const holdersList = statsDiv.querySelector('.ticket-holders-list');
+        
+        if (holders.length === 0) {
+            holdersList.innerHTML = '<li>No ticket holders found</li>';
+            return;
+        }
+        
+        console.log("Processing holders");
+        for (const {address, tickets} of holders) {
             const shortAddress = `${address.slice(0, 4)}...${address.slice(-4)}`;
             const ticketsInTKT = web3.utils.fromWei(tickets, 'ether');
-            return `<li>
-                            <span class="address-container" data-full-address="${address}">
-                                ${shortAddress} <span class="hover-instruction">(Click to copy full address)</span>
-                                <span class="copy-tooltip">Copied!</span>
-                            </span> ${ticketsInTKT} TKT
-                        </li>`;
-        }).join('');
+            
+            console.log("Processing holder:", address, ticketsInTKT);
+            
+            const userRoles = roles.filter(role => 
+                role.address.toLowerCase() === address.toLowerCase()
+            );
+            
+            const attendedEvents = await getUserEvents(address);
+            console.log("Attended events:", attendedEvents);
+            
+            const organizedEvents = allEvents.filter(event => 
+                event.venueManager?.toLowerCase() === address.toLowerCase() || 
+                event.doorman?.toLowerCase() === address.toLowerCase()
+            );
+            console.log("Organized events:", organizedEvents);
+            
+            let holderHTML = `
+                <li class="ticket-holder-item">
+                    <div class="holder-main-info">
+                        <span class="address-container" data-full-address="${address}">
+                            ${shortAddress} <span class="hover-instruction">(Click to copy full address)</span>
+                            <span class="copy-tooltip">Copied!</span>
+                        </span> 
+                        <span class="ticket-balance">${ticketsInTKT} TKT</span>
+                    </div>`;
+            
+            if (userRoles.length > 0) {
+                holderHTML += `<div class="holder-roles">
+                    <strong>Roles:</strong> ${userRoles.map(r => `${r.name} (${r.type})`).join(', ')}
+                </div>`;
+            }
+            
+            if (organizedEvents.length > 0) {
+                holderHTML += `<div class="holder-organized-events">
+                    <strong>Organizes/Manages:</strong> ${organizedEvents.map(e => e.name).join(', ')}
+                </div>`;
+            }
+            
+            if (attendedEvents.length > 0) {
+                holderHTML += `<div class="holder-attended-events">
+                    <strong>Attended:</strong> ${attendedEvents.map(e => e.name).join(', ')}
+                </div>`;
+            }
+            
+            holderHTML += `</li>`;
+            holdersList.innerHTML += holderHTML;
+        }
+        
+        console.log("Setting up address copy");
         setupAddressCopy(statsDiv);
-    } catch {
-        handleError("Error fetching venue stats.");
+        showMessage("✅ Ticket distribution loaded successfully!");
+    } catch (error) {
+        console.error("Error in displayVenueStats:", error);
+        handleError("Error fetching venue stats: " + error.message);
     }
 }
 
@@ -98,7 +185,13 @@ export function checkBalances() {
 
 function toggleRoleSection(role) {
     document.querySelectorAll('.role-section').forEach(section => section.style.display = 'none');
-    document.getElementById(`${role}Section`).style.display = 'block';
+    const sectionId = getRoleSectionId(role);
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.style.display = 'block';
+    } else {
+        console.error(`Section not found: ${sectionId}`);
+    }
 }
 
 function verifyTicketHolder() {

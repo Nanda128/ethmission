@@ -70,7 +70,7 @@ export function returnTicketToVendor() {
             if (ticketBalance <= 0) return handleError("You don't have any tickets to return.");
 
             if (confirm(`Return all ${ticketBalance} tickets to vendor?`)) {
-                const method = state.contract.methods.transfer(getVendorAccess, balance);
+                const method = state.contract.methods.transfer(getVendorAccess(), balance);
                 sendTransaction(method, {from: state.account}, `Returned ${ticketBalance} ticket(s) to vendor`, "Error returning tickets.");
             }
         })
