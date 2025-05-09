@@ -14,7 +14,7 @@ try {
     if (storedEvents) {
         events = JSON.parse(storedEvents);
     }
-    
+
     const storedRoles = localStorage.getItem('ethmission_roles');
     if (storedRoles) {
         roles = JSON.parse(storedRoles);
@@ -50,7 +50,7 @@ export async function getTicketHolders(contract) {
         const result = await contract.methods.getTicketHolders().call();
         const addresses = result[0];
         const tickets = result[1];
-        return addresses.map((address, index) => ({ address, tickets: tickets[index] }));
+        return addresses.map((address, index) => ({address, tickets: tickets[index]}));
     } catch (error) {
         console.error("Failed to fetch ticket holders:", error);
         throw error;
@@ -89,15 +89,15 @@ export async function updateEventAttendance(eventId, newAttendance) {
 export async function recordEventEntry(eventId, userAddress) {
     const attendeeKey = 'ethmission_event_attendees';
     let attendeeMap = JSON.parse(localStorage.getItem(attendeeKey) || '{}');
-    
+
     if (!attendeeMap[userAddress]) {
         attendeeMap[userAddress] = [];
     }
-    
+
     if (!attendeeMap[userAddress].includes(eventId)) {
         attendeeMap[userAddress].push(eventId);
     }
-    
+
     localStorage.setItem(attendeeKey, JSON.stringify(attendeeMap));
     return Promise.resolve();
 }
@@ -106,9 +106,9 @@ export async function getUserEvents(userAddress) {
     const attendeeKey = 'ethmission_event_attendees';
     const attendeeMap = JSON.parse(localStorage.getItem(attendeeKey) || '{}');
     const userEventIds = attendeeMap[userAddress] || [];
-    
+
     const allEvents = await getEvents();
-    
+
     return allEvents.filter(event => userEventIds.includes(event.id));
 }
 

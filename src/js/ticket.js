@@ -1,25 +1,23 @@
 'use strict';
 
-import {state, showMessage, signAndSendTransaction, handleError, getInputValue} from './common.js';
-import {TICKET_PRICE, displayVendorAddress, getVendorAccess} from './config.js';
+import {getInputValue, handleError, showMessage, signAndSendTransaction, state} from './common.js';
+import {displayVendorAddress, TICKET_PRICE} from './config.js';
 import {checkBalances} from './balance.js';
 
 function updatePrice() {
     const quantity = parseInt(document.getElementById('ticketQuantity')?.value) || 1;
-    const unitPrice = TICKET_PRICE;
-    const totalPrice = (quantity * unitPrice).toFixed(2);
-    document.getElementById('totalPrice').textContent = totalPrice;
+    document.getElementById('totalPrice').textContent = (quantity * TICKET_PRICE).toFixed(2);
 }
 
 export function setupTicketPurchase() {
     const button = document.getElementById('buyTicketButton');
     button?.addEventListener('click', buyTicket);
-    
+
     const quantityInput = document.getElementById('ticketQuantity');
     if (quantityInput) {
         quantityInput.addEventListener('change', updatePrice);
         quantityInput.addEventListener('input', updatePrice);
-        
+
         updatePrice();
     }
 }
@@ -38,15 +36,11 @@ export function buyTicket() {
 
     const quantity = parseInt(document.getElementById('ticketQuantity')?.value) || 1;
     const totalPrice = (TICKET_PRICE * quantity).toFixed(2);
-    
+
     const method = state.contract.methods.buyTicket();
     const options = {from: state.account, value: toWei(totalPrice.toString())};
 
-    sendTransaction(
-        method, 
-        options, 
-        `${quantity} ticket${quantity > 1 ? 's' : ''} purchased!`, "Error buying ticket(s)."
-    );
+    sendTransaction(method, options, `${quantity} ticket${quantity > 1 ? 's' : ''} purchased!`, "Error buying ticket(s).");
 }
 
 export function transferTicket() {
@@ -72,7 +66,7 @@ export function refundTickets() {
             const ticketBalance = fromWei(balance);
             if (ticketBalance <= 0) return handleError("You don't have any tickets to refund.");
             if (parseInt(amountToRefund) <= 0) return handleError("Please enter a valid amount.");
-            
+
             if (confirm(`Send ${amountToRefund} ticket(s) to the vendor for 0.01 ETH?`)) {
                 const method = state.contract.methods.refundTickets(amountToRefund);
                 sendTransaction(method, {from: state.account}, `Transferred ${amountToRefund} ticket(s) to be burned`, "Error burning tickets.");

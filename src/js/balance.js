@@ -1,7 +1,9 @@
 'use strict';
 
 import {handleError, showMessage, state, updateBalancesUI, isValidAddress, getInputValue} from './common.js';
-import {getAdminPassword, getRegisteredRoles, getTicketHolders, initConfig, registerRole, getUserEvents, getEvents} from './config.js';
+import {
+    getAdminPassword, getRegisteredRoles, getTicketHolders, initConfig, registerRole, getUserEvents, getEvents
+} from './config.js';
 
 const handlers = {
     checkBalanceButton: checkBalances,
@@ -12,10 +14,7 @@ const handlers = {
 
 function getRoleSectionId(role) {
     const roleMap = {
-        'Attendee': 'AttendeeSection',
-        'Doorman': 'DoormanSection',
-        'Venue': 'VenueSection',
-        'Admin': 'AdminSection'
+        'Attendee': 'AttendeeSection', 'Doorman': 'DoormanSection', 'Venue': 'VenueSection', 'Admin': 'AdminSection'
     };
     return roleMap[role] || 'AttendeeSection';
 }
@@ -32,7 +31,7 @@ async function handleRoleChange(selectedRole) {
 }
 
 async function verifyRoleRegistration(roleType) {
-    if (!state.account) return handleError("Please connect your wallet first."), false;
+    if (!state.account) return handleError(("Please connect your wallet first."), false);
 
     const roles = await getRegisteredRoles();
     const isRegistered = roles.some(role => role.type === roleType && role.address.toLowerCase() === state.account.toLowerCase());
@@ -68,45 +67,39 @@ async function displayVenueStats() {
         console.log("Getting ticket holders");
         const holders = await getTicketHolders(contract);
         console.log("Holders:", holders);
-        
+
         console.log("Getting events");
         const allEvents = await getEvents();
         console.log("Events:", allEvents);
-        
+
         const statsDiv = document.getElementById('venueStats');
         console.log("statsDiv:", statsDiv);
-        
-        statsDiv.innerHTML = '<div class="loading-throbber"></div>' +
-                            '<p>Loading ticket holder data...</p>';
-        
+
+        statsDiv.innerHTML = '<div class="loading-throbber"></div>' + '<p>Loading ticket holder data...</p>';
+
         statsDiv.innerHTML = '<ul class="ticket-holders-list"></ul>';
         const holdersList = statsDiv.querySelector('.ticket-holders-list');
-        
+
         if (holders.length === 0) {
             holdersList.innerHTML = '<li>No ticket holders found</li>';
             return;
         }
-        
+
         console.log("Processing holders");
         for (const {address, tickets} of holders) {
             const shortAddress = `${address.slice(0, 4)}...${address.slice(-4)}`;
             const ticketsInTKT = web3.utils.fromWei(tickets, 'ether');
-            
+
             console.log("Processing holder:", address, ticketsInTKT);
-            
-            const userRoles = roles.filter(role => 
-                role.address.toLowerCase() === address.toLowerCase()
-            );
-            
+
+            const userRoles = roles.filter(role => role.address.toLowerCase() === address.toLowerCase());
+
             const attendedEvents = await getUserEvents(address);
             console.log("Attended events:", attendedEvents);
-            
-            const organizedEvents = allEvents.filter(event => 
-                event.venueManager?.toLowerCase() === address.toLowerCase() || 
-                event.doorman?.toLowerCase() === address.toLowerCase()
-            );
+
+            const organizedEvents = allEvents.filter(event => event.venueManager?.toLowerCase() === address.toLowerCase() || event.doorman?.toLowerCase() === address.toLowerCase());
             console.log("Organized events:", organizedEvents);
-            
+
             let holderHTML = `
                 <li class="ticket-holder-item">
                     <div class="holder-main-info">
@@ -116,29 +109,29 @@ async function displayVenueStats() {
                         </span> 
                         <span class="ticket-balance">${ticketsInTKT} TKT</span>
                     </div>`;
-            
+
             if (userRoles.length > 0) {
                 holderHTML += `<div class="holder-roles">
                     <strong>Roles:</strong> ${userRoles.map(r => `${r.name} (${r.type})`).join(', ')}
                 </div>`;
             }
-            
+
             if (organizedEvents.length > 0) {
                 holderHTML += `<div class="holder-organized-events">
                     <strong>Organizes/Manages:</strong> ${organizedEvents.map(e => e.name).join(', ')}
                 </div>`;
             }
-            
+
             if (attendedEvents.length > 0) {
                 holderHTML += `<div class="holder-attended-events">
                     <strong>Attended:</strong> ${attendedEvents.map(e => e.name).join(', ')}
                 </div>`;
             }
-            
+
             holderHTML += `</li>`;
             holdersList.innerHTML += holderHTML;
         }
-        
+
         console.log("Setting up address copy");
         setupAddressCopy(statsDiv);
         showMessage("✅ Ticket distribution loaded successfully!");
@@ -200,12 +193,10 @@ function verifyTicketHolder() {
 async function showAttendeeEvents(address) {
     try {
         const userEvents = await getUserEvents(address);
-        
+
         const eventsDiv = document.getElementById('attendeeEvents');
         if (userEvents.length > 0) {
-            eventsDiv.innerHTML = `<h4>Registered Events:</h4><ul>` +
-                userEvents.map(event => `<li>${event.name} - ${new Date(event.date).toLocaleString()}</li>`).join('') +
-                `</ul>`;
+            eventsDiv.innerHTML = `<h4>Registered Events:</h4><ul>` + userEvents.map(event => `<li>${event.name} - ${new Date(event.date).toLocaleString()}</li>`).join('') + `</ul>`;
         } else {
             eventsDiv.innerHTML = `<p>No registered events found for this address.</p>`;
         }

@@ -1,95 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Buy Ticket - EthMission</title>
-  <link rel="stylesheet" href="../src/css/styles.css">
-  <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
-  <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
-  <script src="../src/js/common.js" type="module"></script>
-  <script src="../src/js/config.js" type="module"></script>
+    <meta charset="UTF-8">
+    <title>Buy Ticket - EthMission</title>
+    <link rel="stylesheet" href="../src/css/styles.css">
+    <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
+    <script src="../src/js/common.js" type="module"></script>
+    <script src="../src/js/config.js" type="module"></script>
 </head>
 <body>
 <div class="container">
-  <header>
-    <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="create-wallet.html">Create Wallet</a></li>
-        <li><a href="check-balance.html">Check Balance</a></li>
-        <li><a href="buy-ticket.html" class="active">Buy Ticket</a></li>
-        <li><a href="transfer-ticket.html">Transfer Ticket</a></li>
-        <li><a href="create-event.html">Create Event</a></li>
-        <li><a href="event-entry.html">Event Entry</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header>
+        <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="create-wallet.html">Create Wallet</a></li>
+                <li><a href="check-balance.html">Check Balance</a></li>
+                <li><a href="buy-ticket.html" class="active">Buy Ticket</a></li>
+                <li><a href="transfer-ticket.html">Transfer Ticket</a></li>
+                <li><a href="create-event.html">Create Event</a></li>
+                <li><a href="event-entry.html">Event Entry</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <main>
-    <section>
-      <h2>Buy a Ticket</h2>
-      <p>Purchase event tickets using ETH from your connected wallet.</p>
+    <main>
+        <section>
+            <h2>Buy a Ticket</h2>
+            <p>Purchase event tickets using ETH from your connected wallet.</p>
 
-      <div class="connect-wallet-section">
-        <h3>Connect Wallet First</h3>
-        <div class="wallet-connection-options">
-          <button id="connectMetamaskButton">🦊 Connect with MetaMask</button>
+            <div class="connect-wallet-section">
+                <h3>Connect Wallet First</h3>
+                <div class="wallet-connection-options">
+                    <button id="connectMetamaskButton">🦊 Connect with MetaMask</button>
 
-          <div class="option-divider">
-            <span>OR</span>
-          </div>
+                    <div class="option-divider">
+                        <span>OR</span>
+                    </div>
 
-          <div class="wallet-upload-section">
-            <label for="walletFileInput" class="file-input-label">📂 Upload Wallet JSON</label>
-            <input type="file" id="walletFileInput" accept=".json">
-            <div id="uploadedWalletInfo" class="info" style="display: none;"></div>
-            <div id="walletDecryptSection" style="display: none;">
-              <label for="walletPassword">Enter password to decrypt wallet:</label>
-              <input type="password" id="walletPassword" placeholder="Wallet password">
-              <button id="connectUploadedWalletButton">🔓 Connect with Uploaded Wallet</button>
+                    <div class="wallet-upload-section">
+                        <label for="walletFileInput" class="file-input-label">📂 Upload Wallet JSON</label>
+                        <input type="file" id="walletFileInput" accept=".json">
+                        <div id="uploadedWalletInfo" class="info" style="display: none;"></div>
+                        <div id="walletDecryptSection" style="display: none;">
+                            <label for="walletPassword">Enter password to decrypt wallet:</label>
+                            <input type="password" id="walletPassword" placeholder="Wallet password">
+                            <button id="connectUploadedWalletButton">🔓 Connect with Uploaded Wallet</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="wallet-connected-message" style="display: none;">✅ Connected!</div>
+                <div id="walletAddress" class="info"></div>
             </div>
-          </div>
-        </div>
-        <div class="wallet-connected-message" style="display: none;">✅ Connected!</div>
-        <div id="walletAddress" class="info"></div>
-      </div>
 
-      <div class="ticket-purchase-section">
-        <h3>Purchase Ticket</h3>
-        <div class="ticket-info">
-          <div class="ticket-quantity">
-            <label for="ticketQuantity">Number of tickets:</label>
-            <input type="number" id="ticketQuantity" min="1" value="1">
-          </div>
-          <div class="ticket-price">Ticket Price: <span id="ticketPriceAmount">0.01</span> ETH</div>
-          <div class="ticket-details">
-            <p>Includes access to all events linked to us.</p>
-            <p>Tickets are stored as ERC-20 tokens in your wallet.</p>
-          </div>
-        </div>
-        <button id="buyTicketButton">🎫 Buy Ticket (<span id="totalPrice">0.01</span> ETH)</button>
-        <div id="loadingThrobber" class="loading-throbber" style="display: none;"></div>
-        <div id="balances" class="info"></div>
-      </div>
-    </section>
-  </main>
+            <div class="ticket-purchase-section">
+                <h3>Purchase Ticket</h3>
+                <div class="ticket-info">
+                    <div class="ticket-quantity">
+                        <label for="ticketQuantity">Number of tickets:</label>
+                        <input type="number" id="ticketQuantity" min="1" value="1">
+                    </div>
+                    <div class="ticket-price">Ticket Price: <span id="ticketPriceAmount">0.01</span> ETH</div>
+                    <div class="ticket-details">
+                        <p>Includes access to all events linked to us.</p>
+                        <p>Tickets are stored as ERC-20 tokens in your wallet.</p>
+                    </div>
+                </div>
+                <button id="buyTicketButton">🎫 Buy Ticket (<span id="totalPrice">0.01</span> ETH)</button>
+                <div id="loadingThrobber" class="loading-throbber" style="display: none;"></div>
+                <div id="balances" class="info"></div>
+            </div>
+        </section>
+    </main>
 
-  <div id="output" class="output"></div>
+    <div id="output" class="output"></div>
 
-  <footer>
-    <p>©(not really) 2025 EthMission—A Web3 Ticketing DApp</p>
-  </footer>
+    <footer>
+        <p>©(not really) 2025 EthMission—A Web3 Ticketing DApp</p>
+    </footer>
 </div>
 
 <script type="module">
-  import { setupWalletConnectors } from '../src/js/wallet.js';
-  import { setupTicketPurchase } from '../src/js/ticket.js';
+    import {setupWalletConnectors} from '../src/js/wallet.js';
+    import {setupTicketPurchase} from '../src/js/ticket.js';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    setupWalletConnectors();
-    setupTicketPurchase();
-  });
+    document.addEventListener('DOMContentLoaded', () => {
+        setupWalletConnectors();
+        setupTicketPurchase();
+    });
 </script>
 </body>
 </html>

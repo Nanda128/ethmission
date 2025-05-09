@@ -44,11 +44,7 @@ async function createEvent() {
             currentAttendance: 0
         };
 
-        await Promise.all([
-            registerRole("Doorman", eventName, doormanAddress),
-            registerRole("Venue", eventName, state.account),
-            saveEvent(newEvent)
-        ]);
+        await Promise.all([registerRole("Doorman", eventName, doormanAddress), registerRole("Venue", eventName, state.account), saveEvent(newEvent)]);
 
         showMessage(`✅ Event "${eventName}" created successfully!`);
         clearInputs(['eventName', 'eventDate', 'doormanAddress', 'maxCapacity']);
@@ -70,13 +66,13 @@ async function loadEventOptionsAndDetails() {
 function populateEventSelector(events) {
     const selector = document.getElementById('eventSelector');
     const currentSelection = selector.value;
-    
+
     selector.innerHTML = '<option value="">Select an event</option>';
     events.forEach(event => {
         const option = new Option(event.name, event.id);
         selector.add(option);
     });
-    
+
     if (currentSelection) {
         selector.value = currentSelection;
     }
@@ -85,7 +81,8 @@ function populateEventSelector(events) {
 async function displaySelectedEventDetails(events) {
     const eventId = getInputValue('eventSelector');
     const detailsContainer = document.getElementById('eventDetails');
-    if (!eventId) return (detailsContainer.style.display = 'none');
+    detailsContainer.style.display = 'none';
+    if (!eventId) return;
 
     const selectedEvent = events.find(event => event.id === eventId);
     if (!selectedEvent) return;
@@ -113,9 +110,7 @@ async function updateTicketInfo(event) {
     const ticketBalance = await state.contract.methods.balanceOf(state.account).call();
     const hasTickets = parseInt(ticketBalance) > 0;
 
-    setTextContent('ticketBalance', hasTickets
-        ? "✅ You have tickets available to enter."
-        : "❌ You need at least 1 TKT to enter this event.");
+    setTextContent('ticketBalance', hasTickets ? "✅ You have tickets available to enter." : "❌ You need at least 1 TKT to enter this event.");
 
     document.getElementById('enterEventButton').disabled = !hasTickets || event.currentAttendance >= event.maxCapacity;
 }
@@ -141,7 +136,7 @@ async function enterEvent() {
         await transferTicket(selectedEvent);
         selectedEvent.currentAttendance += 1;
         await updateEventAttendance(eventId, selectedEvent.currentAttendance);
-        
+
         await recordEventEntry(eventId, state.account);
 
         showMessage("✅ Successfully entered the event!");

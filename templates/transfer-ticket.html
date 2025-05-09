@@ -1,114 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Transfer Ticket - EthMission</title>
-  <link rel="stylesheet" href="../src/css/styles.css">
-  <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
-  <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
-  <script src="../src/js/common.js" type="module"></script>
-  <script src="../src/js/config.js" type="module"></script>
+    <meta charset="UTF-8">
+    <title>Transfer Ticket - EthMission</title>
+    <link rel="stylesheet" href="../src/css/styles.css">
+    <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
+    <script src="../src/js/common.js" type="module"></script>
+    <script src="../src/js/config.js" type="module"></script>
 </head>
 <body>
 <div class="container">
-  <header>
-    <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="create-wallet.html">Create Wallet</a></li>
-        <li><a href="check-balance.html">Check Balance</a></li>
-        <li><a href="buy-ticket.html">Buy Ticket</a></li>
-        <li><a href="transfer-ticket.html" class="active">Transfer Ticket</a></li>
-        <li><a href="create-event.html">Create Event</a></li>
-        <li><a href="event-entry.html">Event Entry</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header>
+        <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="create-wallet.html">Create Wallet</a></li>
+                <li><a href="check-balance.html">Check Balance</a></li>
+                <li><a href="buy-ticket.html">Buy Ticket</a></li>
+                <li><a href="transfer-ticket.html" class="active">Transfer Ticket</a></li>
+                <li><a href="create-event.html">Create Event</a></li>
+                <li><a href="event-entry.html">Event Entry</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <main>
-    <section>
-      <h2>Transfer a Ticket</h2>
-      <p>Transfer tickets to another wallet or back to the vendor.</p>
+    <main>
+        <section>
+            <h2>Transfer a Ticket</h2>
+            <p>Transfer tickets to another wallet or back to the vendor.</p>
 
-      <div class="connect-wallet-section">
-        <h3>Connect Wallet First</h3>
-        <div class="wallet-connection-options">
-          <button id="connectMetamaskButton">🦊 Connect with MetaMask</button>
+            <div class="connect-wallet-section">
+                <h3>Connect Wallet First</h3>
+                <div class="wallet-connection-options">
+                    <button id="connectMetamaskButton">🦊 Connect with MetaMask</button>
 
-          <div class="option-divider">
-            <span>OR</span>
-          </div>
+                    <div class="option-divider">
+                        <span>OR</span>
+                    </div>
 
-          <div class="wallet-upload-section">
-            <label for="walletFileInput" class="file-input-label">📂 Upload Wallet JSON</label>
-            <input type="file" id="walletFileInput" accept=".json">
-            <div id="uploadedWalletInfo" class="info" style="display: none;"></div>
-            <div id="walletDecryptSection" style="display: none;">
-              <label for="walletPassword">Enter password to decrypt wallet:</label>
-              <input type="password" id="walletPassword" placeholder="Wallet password">
-              <button id="connectUploadedWalletButton">🔓 Connect with Uploaded Wallet</button>
+                    <div class="wallet-upload-section">
+                        <label for="walletFileInput" class="file-input-label">📂 Upload Wallet JSON</label>
+                        <input type="file" id="walletFileInput" accept=".json">
+                        <div id="uploadedWalletInfo" class="info" style="display: none;"></div>
+                        <div id="walletDecryptSection" style="display: none;">
+                            <label for="walletPassword">Enter password to decrypt wallet:</label>
+                            <input type="password" id="walletPassword" placeholder="Wallet password">
+                            <button id="connectUploadedWalletButton">🔓 Connect with Uploaded Wallet</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="wallet-connected-message" style="display: none;">✅ Connected!</div>
+                <div id="walletAddress" class="info"></div>
             </div>
-          </div>
-        </div>
-        <div class="wallet-connected-message" style="display: none;">✅ Connected!</div>
-        <div id="walletAddress" class="info"></div>
-      </div>
 
-      <div class="ticket-transfer">
-        <div class="transfer-section">
-          <h3>Transfer Details</h3>
-          <div class="transfer-form">
-            <div class="form-group">
-              <label for="transferTo">Recipient address:</label>
-              <input id="transferTo" placeholder="Recipient address">
+            <div class="ticket-transfer">
+                <div class="transfer-section">
+                    <h3>Transfer Details</h3>
+                    <div class="transfer-form">
+                        <div class="form-group">
+                            <label for="transferTo">Recipient address:</label>
+                            <input id="transferTo" placeholder="Recipient address">
+                        </div>
+                        <div class="form-group">
+                            <label for="transferAmount">Amount (tickets):</label>
+                            <input id="transferAmount" type="number" placeholder="Amount (tickets)">
+                        </div>
+                        <button id="transferAmountButton">🔁 Transfer</button>
+                    </div>
+                </div>
+
+                <div class="refund-section">
+                    <div class="vendor-transfer">
+                        <h3>Refund Tickets</h3>
+                        <p>To refund your tickets and get ETH back, use the button below:</p>
+                        <div class="vendor-address" id="vendorAddress"></div>
+                        <div class="form-group">
+                            <label for="refundAmount">Amount to refund (in tickets):</label>
+                            <input id="refundAmount" type="number" placeholder="Number of tickets">
+                        </div>
+                        <button id="refundTicketsButton">💰 Refund Tickets</button>
+                    </div>
+                </div>
+
+                <div class="balance-section">
+                    <h3>Your Current Balance</h3>
+                    <button id="checkBalanceButton">🔍 Check My Balances</button>
+                    <div id="balances" class="info"></div>
+                </div>
             </div>
-            <div class="form-group">
-              <label for="transferAmount">Amount (tickets):</label>
-              <input id="transferAmount" type="number" placeholder="Amount (tickets)">
-            </div>
-            <button id="transferAmountButton">🔁 Transfer</button>
-        </div>
-      </div>
+        </section>
+    </main>
 
-      <div class="refund-section">
-        <div class="vendor-transfer">
-          <h3>Refund Tickets</h3>
-          <p>To refund your tickets and get ETH back, use the button below:</p>
-          <div class="vendor-address" id="vendorAddress"></div>
-          <div class="form-group">
-            <label for="refundAmount">Amount to refund (in tickets):</label>
-            <input id="refundAmount" type="number" placeholder="Number of tickets">
-          </div>
-          <button id="refundTicketsButton">💰 Refund Tickets</button>
-        </div>
-      </div>
+    <div id="output" class="output"></div>
 
-      <div class="balance-section">
-        <h3>Your Current Balance</h3>
-        <button id="checkBalanceButton">🔍 Check My Balances</button>
-        <div id="balances" class="info"></div>
-      </div>
-    </section>
-  </main>
-
-  <div id="output" class="output"></div>
-
-  <footer>
-    <p>©(not really) 2025 EthMission—A Web3 Ticketing DApp</p>
-  </footer>
+    <footer>
+        <p>©(not really) 2025 EthMission—A Web3 Ticketing DApp</p>
+    </footer>
 </div>
 
 <script type="module">
-  import { setupWalletConnectors } from '../src/js/wallet.js';
-  import { setupTicketTransfer } from '../src/js/ticket.js';
-  import { setupBalanceChecking } from '../src/js/balance.js';
+    import {setupWalletConnectors} from '../src/js/wallet.js';
+    import {setupTicketTransfer} from '../src/js/ticket.js';
+    import {setupBalanceChecking} from '../src/js/balance.js';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    setupWalletConnectors();
-    setupTicketTransfer();
-    setupBalanceChecking();
-  });
+    document.addEventListener('DOMContentLoaded', () => {
+        setupWalletConnectors();
+        setupTicketTransfer();
+        setupBalanceChecking();
+    });
 </script>
 </body>
 </html>

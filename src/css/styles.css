@@ -359,7 +359,7 @@ input[type="file"] {
 .capacity-indicator {
     height: 100%;
     background-color: #4CAF50;
-    width: 0%;
+    width: 0;
     transition: width 0.3s ease;
 }
 
@@ -437,6 +437,10 @@ footer {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

@@ -1,100 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Event Entry - EthMission</title>
-  <link rel="stylesheet" href="../src/css/styles.css">
-  <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
-  <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
-  <script src="../src/js/common.js" type="module"></script>
-  <script src="../src/js/config.js" type="module"></script>
+    <meta charset="UTF-8">
+    <title>Event Entry - EthMission</title>
+    <link rel="stylesheet" href="../src/css/styles.css">
+    <link rel="icon" href="../assets/static/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
+    <script src="../src/js/common.js" type="module"></script>
+    <script src="../src/js/config.js" type="module"></script>
 </head>
 <body>
 <div class="container">
-  <header>
-    <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="create-wallet.html">Create Wallet</a></li>
-        <li><a href="check-balance.html">Check Balance</a></li>
-        <li><a href="buy-ticket.html">Buy Ticket</a></li>
-        <li><a href="transfer-ticket.html">Transfer Ticket</a></li>
-        <li><a href="create-event.html">Create Event</a></li>
-        <li><a href="event-entry.html" class="active">Event Entry</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header>
+        <h1>🎟️ EthMission—A Web3 Ticketing DApp</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="create-wallet.html">Create Wallet</a></li>
+                <li><a href="check-balance.html">Check Balance</a></li>
+                <li><a href="buy-ticket.html">Buy Ticket</a></li>
+                <li><a href="transfer-ticket.html">Transfer Ticket</a></li>
+                <li><a href="create-event.html">Create Event</a></li>
+                <li><a href="event-entry.html" class="active">Event Entry</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <main>
-    <section>
-      <h2>Enter an Event</h2>
-      <p>Spend 1 TKT token to enter an event.</p>
+    <main>
+        <section>
+            <h2>Enter an Event</h2>
+            <p>Spend 1 TKT token to enter an event.</p>
 
-      <div class="connect-wallet-section">
-        <h3>Connect Wallet First</h3>
-        <div class="wallet-connection-options">
-          <button id="connectMetamaskButton">🦊 Connect with MetaMask</button>
+            <div class="connect-wallet-section">
+                <h3>Connect Wallet First</h3>
+                <div class="wallet-connection-options">
+                    <button id="connectMetamaskButton">🦊 Connect with MetaMask</button>
 
-          <div class="option-divider">
-            <span>OR</span>
-          </div>
+                    <div class="option-divider">
+                        <span>OR</span>
+                    </div>
 
-          <div class="wallet-upload-section">
-            <label for="walletFileInput" class="file-input-label">📂 Upload Wallet JSON</label>
-            <input type="file" id="walletFileInput" accept=".json">
-            <div id="uploadedWalletInfo" class="info" style="display: none;"></div>
-            <div id="walletDecryptSection" style="display: none;">
-              <label for="walletPassword">Enter password to decrypt wallet:</label>
-              <input type="password" id="walletPassword" placeholder="Wallet password">
-              <button id="connectUploadedWalletButton">🔓 Connect with Uploaded Wallet</button>
+                    <div class="wallet-upload-section">
+                        <label for="walletFileInput" class="file-input-label">📂 Upload Wallet JSON</label>
+                        <input type="file" id="walletFileInput" accept=".json">
+                        <div id="uploadedWalletInfo" class="info" style="display: none;"></div>
+                        <div id="walletDecryptSection" style="display: none;">
+                            <label for="walletPassword">Enter password to decrypt wallet:</label>
+                            <input type="password" id="walletPassword" placeholder="Wallet password">
+                            <button id="connectUploadedWalletButton">🔓 Connect with Uploaded Wallet</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="wallet-connected-message" style="display: none;">✅ Connected!</div>
+                <div id="walletAddress" class="info"></div>
             </div>
-          </div>
-        </div>
-        <div class="wallet-connected-message" style="display: none;">✅ Connected!</div>
-        <div id="walletAddress" class="info"></div>
-      </div>
 
-      <div class="event-entry-section">
-        <h3>Available Events</h3>
-        <div class="event-selection">
-          <select id="eventSelector">
-            <option value="">-- Select an Event --</option>
-            <!-- Event options will be populated dynamically -->
-          </select>
-        </div>
-        
-        <div id="eventDetails" class="event-details" style="display: none;">
-          <h4 id="selectedEventName"></h4>
-          <p>Date & Time: <span id="selectedEventDate"></span></p>
-          <p>Current Attendance: <span id="currentAttendance">0</span> / <span id="maxCapacity"></span></p>
-          <div class="capacity-bar">
-            <div id="capacityIndicator" class="capacity-indicator"></div>
-          </div>
-          <button id="enterEventButton">🎟️ Enter Event (Spend 1 TKT)</button>
-          <p id="capacityWarning" class="warning" style="display: none;">⚠️ Reached Max Capacity</p>
-        </div>
-        
-        <div id="ticketBalance" class="info"></div>
-      </div>
-    </section>
-  </main>
+            <div class="event-entry-section">
+                <h3>Available Events</h3>
+                <div class="event-selection">
+                    <label for="eventSelector">Choose an Event:</label>
+                    <select id="eventSelector">
+                        <option value="">-- Select an Event --</option>
+                    </select>
+                </div>
 
-  <div id="output" class="output"></div>
+                <div id="eventDetails" class="event-details" style="display: none;">
+                    <h4 id="selectedEventName" aria-live="polite">Event Name</h4>
+                    <p>Date & Time: <span id="selectedEventDate">TBD</span></p>
+                    <p>Current Attendance: <span id="currentAttendance">0</span> / <span id="maxCapacity"></span></p>
+                    <div class="capacity-bar">
+                        <div id="capacityIndicator" class="capacity-indicator"></div>
+                    </div>
+                    <button id="enterEventButton">🎟️ Enter Event (Spend 1 TKT)</button>
+                    <p id="capacityWarning" class="warning" style="display: none;">⚠️ Reached Max Capacity</p>
+                </div>
 
-  <footer>
-    <p>©(not really) 2025 EthMission—A Web3 Ticketing DApp</p>
-  </footer>
+                <div id="ticketBalance" class="info"></div>
+            </div>
+        </section>
+    </main>
+
+    <div id="output" class="output"></div>
+
+    <footer>
+        <p>©(not really) 2025 EthMission—A Web3 Ticketing DApp</p>
+    </footer>
 </div>
 
 <script type="module">
-  import { setupWalletConnectors } from '../src/js/wallet.js';
-  import { setupEventEntry } from '../src/js/event.js';
+    import {setupWalletConnectors} from '../src/js/wallet.js';
+    import {setupEventEntry} from '../src/js/event.js';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    setupWalletConnectors();
-    setupEventEntry();
-  });
+    document.addEventListener('DOMContentLoaded', () => {
+        setupWalletConnectors();
+        setupEventEntry();
+    });
 </script>
 </body>
 </html>
