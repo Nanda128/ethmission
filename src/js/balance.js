@@ -64,12 +64,6 @@ async function displayVenueStats() {
     try {
         console.log("Getting roles");
         const roles = await getRegisteredRoles();
-        
-        // Skip role verification for testing
-        // if (!roles.some(role => role.address.toLowerCase() === account.toLowerCase())) {
-        //     console.log("Not authorized", account, roles);
-        //     return handleError("You are not authorized to view ticket distribution.");
-        // }
 
         console.log("Getting ticket holders");
         const holders = await getTicketHolders(contract);
@@ -82,14 +76,9 @@ async function displayVenueStats() {
         const statsDiv = document.getElementById('venueStats');
         console.log("statsDiv:", statsDiv);
         
-        // Clear existing content and add a loading indicator
         statsDiv.innerHTML = '<div class="loading-throbber"></div>' +
-                             '<p>Loading ticket holder data...</p>';
+                            '<p>Loading ticket holder data...</p>';
         
-        // Short delay to ensure UI updates
-        await new Promise(resolve => setTimeout(resolve, 100));
-        
-        // Replace with actual content
         statsDiv.innerHTML = '<ul class="ticket-holders-list"></ul>';
         const holdersList = statsDiv.querySelector('.ticket-holders-list');
         

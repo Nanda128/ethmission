@@ -153,7 +153,7 @@ async function enterEvent() {
 
 async function transferTicket(event) {
     const burnAmount = state.web3.utils.toWei("1", "ether");
-    const method = state.contract.methods.transfer(event.doorman, burnAmount);
+    const method = state.contract.methods.transfer(event.venueManager, burnAmount);
 
     if (state.connectionType === 'metamask') {
         await method.send({from: state.account});
