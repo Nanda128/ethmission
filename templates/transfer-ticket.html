@@ -55,25 +55,32 @@
         <div id="walletAddress" class="info"></div>
       </div>
 
-      <div class="transfer-section">
-        <h3>Transfer Details</h3>
-        <div class="transfer-form">
-          <div class="form-group">
-            <label for="transferTo">Recipient address:</label>
-            <input id="transferTo" placeholder="Recipient address">
-          </div>
-          <div class="form-group">
-            <label for="transferAmount">Amount (tickets):</label>
-            <input id="transferAmount" type="number" placeholder="Amount (tickets)">
-          </div>
-          <button id="transferAmountButton">🔁 Transfer</button>
+      <div class="ticket-transfer">
+        <div class="transfer-section">
+          <h3>Transfer Details</h3>
+          <div class="transfer-form">
+            <div class="form-group">
+              <label for="transferTo">Recipient address:</label>
+              <input id="transferTo" placeholder="Recipient address">
+            </div>
+            <div class="form-group">
+              <label for="transferAmount">Amount (tickets):</label>
+              <input id="transferAmount" type="number" placeholder="Amount (tickets)">
+            </div>
+            <button id="transferAmountButton">🔁 Transfer</button>
         </div>
+      </div>
 
+      <div class="refund-section">
         <div class="vendor-transfer">
-          <h3>Return to Vendor</h3>
-          <p>To return your ticket to the vendor (for refund or exchange), use the button below:</p>
+          <h3>Refund Tickets</h3>
+          <p>To refund your tickets and get ETH back, use the button below:</p>
           <div class="vendor-address" id="vendorAddress"></div>
-          <button id="returnToVendorButton">↩️ Return to Vendor</button>
+          <div class="form-group">
+            <label for="refundAmount">Amount to refund (in tickets):</label>
+            <input id="refundAmount" type="number" placeholder="Number of tickets">
+          </div>
+          <button id="refundTicketsButton">💰 Refund Tickets</button>
         </div>
       </div>
 

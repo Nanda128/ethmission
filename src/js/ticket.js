@@ -26,7 +26,7 @@ export function setupTicketPurchase() {
 
 export function setupTicketTransfer() {
     document.getElementById('transferAmountButton')?.addEventListener('click', transferTicket);
-    document.getElementById('returnToVendorButton')?.addEventListener('click', returnTicketToVendor);
+    document.getElementById('refundTicketsButton')?.addEventListener('click', refundTickets);
     displayVendorAddress();
 }
 
@@ -61,17 +61,21 @@ export function transferTicket() {
     sendTransaction(method, {from: state.account}, `Transferred ${amount} ticket(s) to ${to}`, "Error transferring ticket.");
 }
 
-export function returnTicketToVendor() {
+export function refundTickets() {
     if (!isWalletConnected()) return;
+
+    const amountToRefund = getInputValue("refundAmount");
+    if (!amountToRefund) return handleError("Please enter the number of tickets to refund.");
 
     state.contract.methods.balanceOf(state.account).call()
         .then(balance => {
             const ticketBalance = fromWei(balance);
-            if (ticketBalance <= 0) return handleError("You don't have any tickets to return.");
-
-            if (confirm(`Return all ${ticketBalance} tickets to vendor?`)) {
-                const method = state.contract.methods.transfer(getVendorAccess(), balance);
-                sendTransaction(method, {from: state.account}, `Returned ${ticketBalance} ticket(s) to vendor`, "Error returning tickets.");
+            if (ticketBalance <= 0) return handleError("You don't have any tickets to refund.");
+            if (parseInt(amountToRefund) <= 0) return handleError("Please enter a valid amount.");
+            
+            if (confirm(`Send ${amountToRefund} ticket(s) to the vendor for 0.01 ETH?`)) {
+                const method = state.contract.methods.refundTickets(amountToRefund);
+                sendTransaction(method, {from: state.account}, `Transferred ${amountToRefund} ticket(s) to be burned`, "Error burning tickets.");
             }
         })
         .catch(() => handleError("Error checking your ticket balance."));
