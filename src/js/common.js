@@ -5,8 +5,17 @@ export const state = {
 };
 
 export function showMessage(msg, isError = false) {
-    const output = document.getElementById("output");
-    if (!output) return;
+    let output = document.getElementById("output");
+
+    if (output) {
+        const newOutput = output.cloneNode(true);
+        output.parentNode.appendChild(newOutput);
+        output = newOutput;
+    } else {
+        output = document.createElement("div");
+        output.id = "output";
+        document.body.appendChild(output);
+    }
 
     output.innerText = msg;
     output.style.backgroundColor = isError ? '#ffcccc' : '#ccffcc';
